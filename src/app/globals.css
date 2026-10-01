@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  /* Semantic palette — warm, calm, reassuring */
+  --color-canvas: #faf6f2;       /* page background */
+  --color-surface: #ffffff;      /* cards */
+  --color-ink: #2b2320;          /* primary text */
+  --color-muted: #7a6d66;        /* secondary text */
+  --color-line: #ece3dc;         /* borders */
+  --color-brand: #c0615a;        /* clay rose */
+  --color-brand-strong: #a44d47;
+  --color-brand-soft: #f7e6e2;
+  --color-sage: #6f8f7a;
+  --color-sage-soft: #e6efe8;
+
+  --radius-card: 1.25rem;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-canvas text-ink font-sans;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+/* ---------- Print ---------- */
+@page {
+  size: A4;
+  margin: 14mm 16mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000;
+    font-size: 11pt;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Keep list items and table rows from splitting across pages */
+  li,
+  tr,
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+}

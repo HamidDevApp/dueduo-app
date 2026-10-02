@@ -1,18 +1,18 @@
 import { Check, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Task = { title: string; done?: boolean; owner: "You" | "Youssef" | "Both" };
+type Task = { title: string; done?: boolean; owner: "You" | "Jack" | "Both" };
 
 const TASKS: Task[] = [
-  { title: "Book the anatomy scan", owner: "Youssef", done: true },
+  { title: "Book the anatomy scan", owner: "Jack", done: true },
   { title: "File leave paperwork", owner: "You" },
-  { title: "Ask for hand-me-downs", owner: "Youssef" },
+  { title: "Ask for hand-me-downs", owner: "Jack" },
   { title: "Compare birth centers", owner: "Both" },
 ];
 
 const CHIP: Record<Task["owner"], string> = {
   You: "bg-brand-soft text-brand-strong",
-  Youssef: "bg-sage-soft text-[#4f6b59]",
+  Jack: "bg-sage-soft text-[#4f6b59]",
   Both: "bg-canvas text-ink",
 };
 
@@ -63,8 +63,8 @@ export function ProductPreview() {
   return (
     <div aria-hidden className="relative mx-auto h-[470px] w-full max-w-[520px] select-none sm:h-[480px]">
       <div className="absolute inset-0 -z-10 rounded-full bg-[radial-gradient(closest-side,rgba(192,97,90,0.18),transparent)] blur-2xl" />
-      <Device who="Salma" role="You" highlight="You" className="absolute top-0 left-0 -rotate-3 sm:left-2" />
-      <Device who="Youssef" role="Co-Pilot" highlight="Youssef" className="absolute right-0 bottom-12 rotate-3 sm:right-2 sm:bottom-0" />
+      <Device who="Emma" role="You" highlight="You" className="absolute top-0 left-0 -rotate-3 sm:left-2" />
+      <Device who="Jack" role="Co-Pilot" highlight="Jack" className="absolute right-0 bottom-12 rotate-3 sm:right-2 sm:bottom-0" />
       <div className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-xs font-semibold whitespace-nowrap text-canvas shadow-xl sm:bottom-16 sm:left-8 sm:translate-x-0">
         <RefreshCw className="size-3.5" /> Synced on both phones
       </div>

@@ -189,11 +189,11 @@ const COPILOT_POINTS = [
 ];
 
 const SPLIT = [
-  { task: "Install the car seat", who: "Youssef" },
-  { task: "Pre-register at the hospital", who: "Youssef" },
+  { task: "Install the car seat", who: "Jack" },
+  { task: "Pre-register at the hospital", who: "Jack" },
   { task: "Draft birth preferences", who: "Together" },
   { task: "Finish work handover", who: "You" },
-  { task: "Send the hospital visitor message", who: "Youssef" },
+  { task: "Send the hospital visitor message", who: "Jack" },
 ];
 
 export function CoPilotSpotlight() {

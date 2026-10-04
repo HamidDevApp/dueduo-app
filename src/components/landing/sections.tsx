@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
+import { CookieSettingsButton } from "@/components/consent/consent-banner";
 import { SITE } from "@/lib/site-config";
 import { CtaLink } from "./cta-link";
 import { ProductPreview } from "./product-preview";
@@ -518,12 +519,16 @@ export function SiteFooter() {
             <p className="mt-4 text-sm text-muted">{SITE.tagline}.</p>
           </div>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm">
-            <a href="#co-pilot" className="text-muted hover:text-ink">Co-Pilot</a>
-            <a href="#features" className="text-muted hover:text-ink">Features</a>
-            <a href="#pricing" className="text-muted hover:text-ink">Pricing</a>
-            <a href="#faq" className="text-muted hover:text-ink">FAQ</a>
+            <Link href="/#co-pilot" className="text-muted hover:text-ink">Co-Pilot</Link>
+            <Link href="/#features" className="text-muted hover:text-ink">Features</Link>
+            <Link href="/#pricing" className="text-muted hover:text-ink">Pricing</Link>
+            <Link href="/#faq" className="text-muted hover:text-ink">FAQ</Link>
             <Link href="/login" className="text-muted hover:text-ink">Log in</Link>
             <a href={`mailto:${SITE.supportEmail}`} className="text-muted hover:text-ink">Contact</a>
+            <Link href="/terms" className="text-muted hover:text-ink">Terms</Link>
+            <Link href="/privacy" className="text-muted hover:text-ink">Privacy</Link>
+            <Link href="/refund" className="text-muted hover:text-ink">Refunds</Link>
+            <CookieSettingsButton className="text-left text-muted hover:text-ink" />
           </nav>
         </div>
         <div className="mt-12 flex flex-col gap-2 border-t border-ink/5 pt-6 text-xs text-muted sm:flex-row sm:justify-between">

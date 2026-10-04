@@ -66,7 +66,18 @@ export async function completeOnboarding(
   const { supabase, user, role } = await getSpace();
   if (role !== "owner") redirect("/dashboard");
 
-  // التعديل الجديد ديال Claude كيبدا من هنا
+  // Pregnancy details are health data: explicit consent is required (recorded once).
+  const { data: consentRow } = await supabase
+    .from("profiles")
+    .select("terms_accepted_at, health_consent_at")
+    .eq("id", user.id)
+    .maybeSingle();
+  const alreadyConsented = Boolean(consentRow?.health_consent_at);
+  if (!alreadyConsented && formData.get("consent") !== "on") {
+    return { error: "Please accept the Terms and the health-data consent to continue.", step: 3 };
+  }
+  const now = new Date().toISOString();
+
   const { data: updated, error } = await supabase
     .from("profiles")
     .update({
@@ -83,10 +94,11 @@ export async function completeOnboarding(
       partner_leave_weeks: partnerLeave,
       work_status: oneOf(formData.get("work_status"), WORK_STATUS, "not_yet"),
       visitor_policy: oneOf(formData.get("visitor_policy"), VISITOR_POLICY, "limited"),
-      onboarded_at: new Date().toISOString(),
+      onboarded_at: now,
+      ...(alreadyConsented ? {} : { terms_accepted_at: consentRow?.terms_accepted_at ?? now, health_consent_at: now }),
     })
     .eq("id", user.id)
-    .select("id"); // ضروري باش يرجع شحال من سطر تقاس
+    .select("id");
 
   // Supabase does NOT error when an update matches 0 rows (missing profile or RLS),
   // so check the returned rows explicitly.
@@ -102,7 +114,6 @@ export async function completeOnboarding(
         : "Your profile wasn't found. Please sign out and in again, or contact support.",
     };
   }
-  // التعديل كيسالي هنا
 
   // ---- Step 2: Co-Pilot invite (only if none is pending already)
   const wantsCoPilot = formData.get("invite_partner") === "on";

@@ -1,5 +1,6 @@
 import "server-only";
 import type Stripe from "stripe";
+import { sendServerPurchase } from "@/lib/capi";
 import { UUID_RE } from "@/lib/form";
 import { SITE } from "@/lib/site-config";
 import { stripe } from "@/lib/stripe";
@@ -29,22 +30,45 @@ export async function fulfillCheckout(sessionId: string): Promise<FulfillResult>
 
   const admin = createAdminClient();
 
-  const { error: payError } = await admin.from("payments").upsert(
-    {
-      user_id: userId,
-      stripe_session_id: session.id,
-      payment_intent_id: idOf(session.payment_intent),
-      amount_total: session.amount_total,
-      currency: session.currency,
-      status: "paid",
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "stripe_session_id" },
-  );
+  // ignoreDuplicates → the row is only returned the FIRST time (webhook and success page both call this).
+  const { data: inserted, error: payError } = await admin
+    .from("payments")
+    .upsert(
+      {
+        user_id: userId,
+        stripe_session_id: session.id,
+        payment_intent_id: idOf(session.payment_intent),
+        amount_total: session.amount_total,
+        currency: session.currency,
+        status: "paid",
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "stripe_session_id", ignoreDuplicates: true },
+    )
+    .select("id");
   if (payError) throw payError;
 
   const { error } = await admin.from("profiles").update({ has_access: true }).eq("id", userId);
   if (error) throw error;
+
+  // Ad reporting: once per purchase, only if the buyer accepted marketing cookies, never for free (100% coupon) orders.
+  const m = session.metadata ?? {};
+  if (inserted?.length && m.ad_consent === "granted" && (session.amount_total ?? 0) > 0) {
+    await sendServerPurchase({
+      eventId: session.id,
+      userId,
+      email: session.customer_details?.email ?? session.customer_email,
+      value: (session.amount_total ?? 0) / 100,
+      currency: (session.currency ?? "usd").toUpperCase(),
+      sourceUrl: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/checkout`,
+      ip: m.ip || undefined,
+      userAgent: m.ua || undefined,
+      fbp: m.fbp || undefined,
+      fbc: m.fbc || undefined,
+      ttp: m.ttp || undefined,
+      ttclid: m.ttclid || undefined,
+    });
+  }
 
   return { status: "paid", userId };
 }

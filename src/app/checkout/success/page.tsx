@@ -28,7 +28,7 @@ export default async function CheckoutSuccessPage({
   }
 
   if (result.status === "paid" && result.userId === user.id) {
-    redirect(profile?.due_date ? "/dashboard" : "/onboarding");
+    redirect(`${profile?.due_date ? "/dashboard" : "/onboarding"}?purchase=${encodeURIComponent(session_id)}`);
   }
 
   const pending = result.status === "pending";

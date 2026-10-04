@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { HeartHandshake } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
@@ -53,6 +54,11 @@ export default async function InvitePage({
             Join the plan
           </button>
         </form>
+        <p className="mt-3 text-xs text-muted">
+          By joining you agree to our{" "}
+          <Link href="/terms" className="underline underline-offset-2 hover:text-ink">Terms</Link> and{" "}
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy Policy</Link>.
+        </p>
       </div>
     </main>
   );

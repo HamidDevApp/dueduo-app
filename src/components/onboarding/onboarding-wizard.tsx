@@ -28,7 +28,7 @@ type Defaults = {
   visitorPolicy: string;
 };
 
-type Props = { limits: { due: Range; lmp: Range }; defaults: Defaults };
+type Props = { limits: { due: Range; lmp: Range }; defaults: Defaults; needsConsent: boolean };
 
 const STEPS = [
   { title: "Your due date", hint: "Everything is planned around this one date." },
@@ -54,7 +54,7 @@ const inputClass =
 
 const initialState: OnboardingState = { error: null };
 
-export function OnboardingWizard({ limits, defaults }: Props) {
+export function OnboardingWizard({ limits, defaults, needsConsent }: Props) {
   const [state, formAction, pending] = useActionState(completeOnboarding, initialState);
   const [step, setStep] = useState(0);
 
@@ -311,6 +311,19 @@ export function OnboardingWizard({ limits, defaults }: Props) {
         <p className="text-xs text-muted">
           You can change these anytime. {f.partnerName.trim() || "Your partner"} can send the visitor messages for you.
         </p>
+
+        {needsConsent && (
+          <label className="flex cursor-pointer gap-3 rounded-xl border border-line bg-canvas/60 p-4 text-sm leading-relaxed">
+            <input type="checkbox" name="consent" required className="mt-1 size-4 shrink-0 accent-[var(--color-brand)]" />
+            <span>
+              I agree to the{" "}
+              <a href="/terms" target="_blank" className="font-semibold underline underline-offset-2">Terms</a> and{" "}
+              <a href="/privacy" target="_blank" className="font-semibold underline underline-offset-2">Privacy Policy</a>, and
+              I consent to DueDuo storing my pregnancy details (health information) to run my planner. I can withdraw
+              this anytime by deleting my account.
+            </span>
+          </label>
+        )}
       </Card>
 
       {error && (

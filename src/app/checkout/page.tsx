@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Check, HeartHandshake, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 import { PayButton } from "@/components/checkout/pay-button";
+import { TrackEvent } from "@/components/tracking/track-event";
 import { SITE } from "@/lib/site-config";
 import { getSpace } from "@/lib/space";
 import { startCheckout } from "./actions";
@@ -69,9 +71,15 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
             ))}
           </ul>
 
+          <TrackEvent event="InitiateCheckout" value={SITE.priceValue} currency={SITE.currency} />
           <form action={startCheckout} className="mt-6">
             <PayButton label={`Unlock for ${SITE.price}`} />
           </form>
+          <p className="mt-3 text-center text-xs text-muted">
+            By continuing you agree to our{" "}
+            <Link href="/terms" className="underline underline-offset-2 hover:text-ink">Terms</Link> and{" "}
+            <Link href="/refund" className="underline underline-offset-2 hover:text-ink">Refund policy</Link>.
+          </p>
 
           <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
             <ShieldCheck className="size-4" aria-hidden /> Secure payment by Stripe

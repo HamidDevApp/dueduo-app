@@ -3,7 +3,9 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Baby, Mail } from "lucide-react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { track } from "@/lib/track";
 
 function LoginForm() {
   const params = useSearchParams();
@@ -24,6 +26,7 @@ function LoginForm() {
       },
     });
     setState(error ? "error" : "sent");
+    if (!error) track("Lead");
   }
 
   if (state === "sent") {
@@ -74,6 +77,12 @@ function LoginForm() {
       >
         {state === "sending" ? "Sending…" : "Send magic link"}
       </button>
+
+      <p className="text-center text-xs text-muted">
+        By continuing you agree to our{" "}
+        <Link href="/terms" className="underline underline-offset-2 hover:text-ink">Terms</Link> and{" "}
+        <Link href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy Policy</Link>.
+      </p>
     </form>
   );
 }

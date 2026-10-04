@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { ConsentBanner } from "@/components/consent/consent-banner";
+import { Pixels } from "@/components/tracking/pixels";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -22,7 +25,13 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="min-h-dvh">{children}</body>
+      <body className="min-h-dvh">
+        {children}
+        <ConsentBanner />
+        <Pixels />
+        {/* Cookieless visit statistics — no consent needed. Enable "Web Analytics" in your Vercel project. */}
+        <Analytics />
+      </body>
     </html>
   );
 }

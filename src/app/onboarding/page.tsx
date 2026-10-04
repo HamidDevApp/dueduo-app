@@ -3,15 +3,32 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Baby } from "lucide-react";
 import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
+import { TrackEvent } from "@/components/tracking/track-event";
 import { PREGNANCY_DAYS, addDays, isoToday } from "@/lib/pregnancy";
 import { getSpace } from "@/lib/space";
 
 export const metadata: Metadata = { title: "Set up your plan" };
 
-export default async function OnboardingPage() {
-  const { role, profile } = await getSpace();
+export default async function OnboardingPage({ searchParams }: { searchParams: Promise<{ purchase?: string }> }) {
+  const { purchase } = await searchParams;
+  const { supabase, user, role, profile } = await getSpace();
   if (role === "partner") redirect("/dashboard"); // only the owner sets up the space
   if (!profile?.has_access) redirect("/checkout");
+
+  const [consentRes, paymentRes] = await Promise.all([
+    supabase.from("profiles").select("health_consent_at").eq("id", user.id).maybeSingle(),
+    // Only report a purchase that really belongs to this user (amount from our own record).
+    purchase?.startsWith("cs_")
+      ? supabase
+          .from("payments")
+          .select("stripe_session_id, amount_total, currency")
+          .eq("stripe_session_id", purchase)
+          .eq("user_id", user.id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+  ]);
+  const needsConsent = !consentRes.data?.health_consent_at;
+  const payment = paymentRes.data as { stripe_session_id: string; amount_total: number | null; currency: string | null } | null;
 
   const today = isoToday();
   const limits = {
@@ -36,7 +53,16 @@ export default async function OnboardingPage() {
           </p>
         </div>
 
+        {payment && (payment.amount_total ?? 0) > 0 && (
+          <TrackEvent
+            event="Purchase"
+            eventId={payment.stripe_session_id}
+            value={(payment.amount_total ?? 0) / 100}
+            currency={(payment.currency ?? "usd").toUpperCase()}
+          />
+        )}
         <OnboardingWizard
+          needsConsent={needsConsent}
           limits={limits}
           defaults={{
             dueDate: profile?.due_date ?? "",

@@ -220,6 +220,11 @@ export default async function SettingsPage() {
             . We&apos;ll confirm by email.
           </p>
           <p className="text-xs text-muted">
+            <Link href="/terms" className="underline-offset-2 hover:underline">Terms</Link> ·{" "}
+            <Link href="/privacy" className="underline-offset-2 hover:underline">Privacy</Link> ·{" "}
+            <Link href="/refund" className="underline-offset-2 hover:underline">Refunds</Link>
+          </p>
+          <p className="text-xs text-muted">
             This planner is for organization only and isn&apos;t medical advice. Always follow your doctor or midwife.
           </p>
         </div>

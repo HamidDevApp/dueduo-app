@@ -3,10 +3,10 @@ import { Logo } from "@/components/brand/logo";
 import { CHECKOUT_PATH } from "./cta-link";
 
 const LINKS = [
-  { href: "#co-pilot", label: "Co-Pilot" },
-  { href: "#features", label: "Features" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#co-pilot", label: "Co-Pilot" },
+  { href: "/#features", label: "Features" },
+  { href: "/#pricing", label: "Pricing" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function SiteHeader() {
@@ -18,9 +18,9 @@ export function SiteHeader() {
         </Link>
         <nav aria-label="Main" className="hidden items-center gap-1 text-sm font-medium md:flex">
           {LINKS.map((l) => (
-            <a key={l.href} href={l.href} className="rounded-full px-3.5 py-2 text-muted transition-colors hover:text-ink">
+            <Link key={l.href} href={l.href} className="rounded-full px-3.5 py-2 text-muted transition-colors hover:text-ink">
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex items-center gap-1.5 text-sm font-semibold whitespace-nowrap">

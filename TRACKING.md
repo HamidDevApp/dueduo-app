@@ -26,7 +26,7 @@ Existing test accounts will see the checkbox the next time they open `/onboardin
    - **deletion within 30 days**
    - **no health data shared with ad platforms**
 4. Have the final texts reviewed by a lawyer or a reputable policy service. They are a strong template, not legal advice.
-5. **Stripe → Settings → Business → Public details:** add `https://dueduo.com/terms` and `https://dueduo.com/privacy`. Stripe Checkout will link to them.
+5. **Polar → Settings:** add your support email and website, and make sure the product description matches the site. Polar is the merchant of record, so its own terms apply to the sale.
 
 ---
 
@@ -68,12 +68,12 @@ In your Vercel project, open the **Analytics** tab and click **Enable**. It's co
 | Page view | every page | `PageView` | `page` |
 | Lead | magic link sent on `/login` | `Lead` | `SubmitForm` |
 | Initiate checkout | `/checkout` page opened | `InitiateCheckout` | `InitiateCheckout` |
-| Purchase | after payment: browser event on `/onboarding` **plus** server event from the Stripe webhook, sharing one event ID | `Purchase` | `CompletePayment` |
+| Purchase | after payment: browser event on `/onboarding` **plus** server event from the Polar webhook (`order.paid`), sharing one event ID (the Polar checkout ID) | `Purchase` | `CompletePayment` |
 
 Notes:
 
 - **Free orders aren't reported.** Purchases paid with a 100% promo code send no Purchase event.
-- **The server event follows the visitor's choice.** It is only sent if they accepted cookies; that choice is stored on the Stripe checkout.
+- **The server event follows the visitor's choice.** It is only sent if they accepted cookies; that choice is stored in the Polar checkout metadata.
 - **No pregnancy or health data** is ever sent to Meta or TikTok. The only identifiers sent are a hashed email, a hashed user ID, the IP address, the browser details and the platforms' own cookies.
 
 ## Final check

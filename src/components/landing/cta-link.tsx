@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Primary conversion path: magic-link sign-up → straight to Stripe checkout. */
+/** Primary conversion path: magic-link sign-up → straight to Polar checkout. */
 export const CHECKOUT_PATH = "/login?next=/checkout";
 
 type Variant = "primary" | "dark" | "light";

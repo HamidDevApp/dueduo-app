@@ -30,8 +30,8 @@ export default function PrivacyPage() {
           </li>
           <li><strong>Co-Pilot:</strong> the partner&apos;s email and anything they add to the shared plan.</li>
           <li>
-            <strong>Payment:</strong> Stripe processes your payment. We receive the amount, currency, status and your email —
-            never your card number.
+            <strong>Payment:</strong> Polar sells {SITE.name} to you as our merchant of record and processes your payment.
+            We receive the amount, currency, status and your email — never your card number.
           </li>
           <li><strong>Technical:</strong> basic logs (such as IP address and browser) needed to run and secure the service.</li>
           <li><strong>Advertising cookies:</strong> only if you accept them (see section 7).</li>
@@ -53,7 +53,10 @@ export default function PrivacyPage() {
         <ul>
           <li><strong>Supabase</strong> — database and sign-in.</li>
           <li><strong>Vercel</strong> — website hosting and privacy-friendly, cookieless visit statistics.</li>
-          <li><strong>Stripe</strong> — payments and receipts.</li>
+          <li>
+            <strong>Polar</strong> — our merchant of record: it handles checkout, payment, receipts, sales tax and refunds,
+            as an independent controller under its own privacy policy.
+          </li>
           <li><strong>Our email provider</strong> — sending sign-in links and service emails.</li>
           <li>
             <strong>Meta and TikTok</strong> — only if you accept advertising cookies. If you buy, we tell them a purchase

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { AutoRefresh } from "@/components/checkout/auto-refresh";
 import { fulfillCheckout, type FulfillResult } from "@/lib/billing";
+import { UUID_RE } from "@/lib/form";
 import { getSpace } from "@/lib/space";
 
 export const metadata: Metadata = { title: "Payment received" };
@@ -11,24 +12,24 @@ export const metadata: Metadata = { title: "Payment received" };
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>;
+  searchParams: Promise<{ checkout_id?: string }>;
 }) {
-  const { session_id } = await searchParams;
-  if (!session_id?.startsWith("cs_")) redirect("/checkout");
+  const { checkout_id } = await searchParams;
+  if (!checkout_id || !UUID_RE.test(checkout_id)) redirect("/checkout");
 
   const { user, profile } = await getSpace();
 
-  // Don't wait for the webhook: verify with Stripe directly (idempotent).
+  // Don't wait for the webhook: verify with Polar directly (idempotent).
   let result: FulfillResult | { status: "error" };
   try {
-    result = await fulfillCheckout(session_id);
+    result = await fulfillCheckout(checkout_id);
   } catch (err) {
     console.error("[checkout/success] fulfillment failed", err);
     result = { status: "error" };
   }
 
   if (result.status === "paid" && result.userId === user.id) {
-    redirect(`${profile?.due_date ? "/dashboard" : "/onboarding"}?purchase=${encodeURIComponent(session_id)}`);
+    redirect(`${profile?.due_date ? "/dashboard" : "/onboarding"}?purchase=${encodeURIComponent(checkout_id)}`);
   }
 
   const pending = result.status === "pending";

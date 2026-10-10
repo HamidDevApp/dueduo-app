@@ -82,7 +82,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
           </p>
 
           <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
-            <ShieldCheck className="size-4" aria-hidden /> Secure payment by Stripe
+            <ShieldCheck className="size-4" aria-hidden /> Secure payment by Polar
             {SITE.guaranteeDays ? ` · ${SITE.guaranteeDays}-day money-back guarantee` : ""}
           </p>
         </div>

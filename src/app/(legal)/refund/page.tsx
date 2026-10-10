@@ -23,7 +23,10 @@ export default function RefundPage() {
               Email <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a> from your account email (or include it in
               your message).
             </li>
-            <li>We refund to your original payment method, usually within 5–10 business days depending on your bank.</li>
+            <li>
+              Refunds are issued through Polar, our merchant of record, to your original payment method, usually within
+              5–10 business days depending on your bank.
+            </li>
             <li>When a refund is issued, access to the plan ends for you and your Co-Pilot.</li>
           </ul>
         </LegalSection>
@@ -39,7 +42,8 @@ export default function RefundPage() {
 
       <LegalSection title="Duplicate or unauthorised charges">
         <p>
-          If you were charged twice or don&apos;t recognise a charge, email us right away and we will fix it promptly.
+          If you were charged twice or don&apos;t recognise a charge, email us right away and we will fix it promptly. The
+          charge on your statement comes from Polar, which processes payments for {SITE.name}.
         </p>
       </LegalSection>
     </LegalPage>

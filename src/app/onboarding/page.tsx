@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { Baby } from "lucide-react";
 import { OnboardingWizard } from "@/components/onboarding/onboarding-wizard";
 import { TrackEvent } from "@/components/tracking/track-event";
+import { UUID_RE } from "@/lib/form";
 import { PREGNANCY_DAYS, addDays, isoToday } from "@/lib/pregnancy";
 import { getSpace } from "@/lib/space";
 
@@ -18,7 +19,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
   const [consentRes, paymentRes] = await Promise.all([
     supabase.from("profiles").select("health_consent_at").eq("id", user.id).maybeSingle(),
     // Only report a purchase that really belongs to this user (amount from our own record).
-    purchase?.startsWith("cs_")
+    purchase && UUID_RE.test(purchase)
       ? supabase
           .from("payments")
           .select("stripe_session_id, amount_total, currency")

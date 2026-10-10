@@ -6,6 +6,7 @@ import { Baby, Mail } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { track } from "@/lib/track";
+import { SITE } from "@/lib/site-config";
 
 function LoginForm() {
   const params = useSearchParams();
@@ -22,7 +23,7 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? SITE.url : window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
     setState(error ? "error" : "sent");

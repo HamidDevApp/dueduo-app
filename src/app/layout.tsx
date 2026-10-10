@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ConsentBanner } from "@/components/consent/consent-banner";
 import { Pixels } from "@/components/tracking/pixels";
+import { configuredOrigin } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   },
   description:
     "DueDuo: the week-by-week command center for first-time parents — roadmap, appointments, doctor questions, budget, registry and hospital bag.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(configuredOrigin() ?? "http://localhost:3000"),
 };
 
 export const viewport: Viewport = {

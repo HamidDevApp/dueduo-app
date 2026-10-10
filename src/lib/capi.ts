@@ -8,7 +8,7 @@ const META_API_VERSION = "v25.0";
 const sha256 = (v: string) => createHash("sha256").update(v.trim().toLowerCase()).digest("hex");
 
 export type PurchaseSignal = {
-  eventId: string; // = Stripe Checkout Session id (same as the browser event → deduplicated)
+  eventId: string; // = Polar checkout id (same as the browser event → deduplicated)
   userId: string;
   email?: string | null;
   value: number;

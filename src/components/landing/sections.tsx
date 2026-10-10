@@ -51,7 +51,7 @@ function SectionTitle({ children, className = "" }: { children: React.ReactNode;
 export function Hero() {
   const trust = [
     { icon: Users, text: "Your partner joins free" },
-    { icon: ShieldCheck, text: "Secure checkout by Stripe" },
+    { icon: ShieldCheck, text: "Secure checkout by Polar" },
     ...(SITE.guaranteeDays ? [{ icon: RotateCcw, text: `${SITE.guaranteeDays}-day money-back guarantee` }] : []),
     { icon: Smartphone, text: "Works on any phone — no download" },
   ];
@@ -426,7 +426,7 @@ export function Pricing() {
             <CtaLink className="mt-8 w-full">Start our plan</CtaLink>
             <div className="mt-6 space-y-2 text-xs text-muted">
               <p className="flex items-center justify-center gap-1.5">
-                <ShieldCheck className="size-4" aria-hidden /> Secure checkout by Stripe
+                <ShieldCheck className="size-4" aria-hidden /> Secure checkout by Polar
               </p>
               {SITE.guaranteeDays && (
                 <p className="flex items-center justify-center gap-1.5">

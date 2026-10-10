@@ -50,8 +50,12 @@ export default function TermsPage() {
             Access costs a one-time payment of {SITE.price} ({SITE.currency}) unless shown otherwise at checkout. It is not a
             subscription and does not renew.
           </li>
-          <li>Payments are processed by Stripe. We never see or store your full card details.</li>
-          <li>Prices may include or exclude taxes depending on your location, as shown at checkout.</li>
+          <li>
+            Our order process is conducted by our online reseller Polar (polar.sh), who is the merchant of record for all
+            orders. Polar handles payment, invoicing, sales tax and refunds, and its own terms of sale apply to the
+            purchase. We never see or store your full card details.
+          </li>
+          <li>Applicable taxes are calculated by Polar based on your location and shown at checkout.</li>
           <li>
             Your purchase gives you personal, non-transferable access to {SITE.name} for as long as we operate the service.
           </li>

@@ -6,38 +6,39 @@ import { CONSENT_COOKIE } from "@/lib/consent";
 import { SITE } from "@/lib/site-config";
 import { siteOrigin } from "@/lib/site";
 import { getSpace } from "@/lib/space";
-import { stripe } from "@/lib/stripe";
+import { polarApi, type PolarCheckout } from "@/lib/polar";
 
 export async function startCheckout() {
   const { user, role, profile } = await getSpace();
   if (role !== "owner") redirect("/dashboard");
   if (profile?.has_access) redirect(profile.due_date ? "/dashboard" : "/onboarding");
 
-  const priceId = process.env.STRIPE_PRICE_ID;
-  if (!priceId) throw new Error("STRIPE_PRICE_ID is not set");
+  const productId = process.env.POLAR_PRODUCT_ID;
+  if (!productId) throw new Error("POLAR_PRODUCT_ID is not set");
 
   const origin = await siteOrigin();
+  // Copied by Polar onto the order, so the webhook knows who paid and can send the ad Purchase event.
   const tag = { product: SITE.productKey, user_id: user.id, ...(await adSignals()) };
 
-  const session = await stripe().checkout.sessions.create({
-    mode: "payment",
-    line_items: [{ price: priceId, quantity: 1 }],
-    client_reference_id: user.id, // how the webhook knows who paid
-    customer_email: user.email ?? undefined,
-    metadata: tag,
-    payment_intent_data: { metadata: { product: SITE.productKey, user_id: user.id } },
-    allow_promotion_codes: true,
-    success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/checkout?canceled=1`,
+  const checkout = await polarApi<PolarCheckout>("/v1/checkouts/", {
+    method: "POST",
+    body: {
+      products: [productId],
+      customer_email: user.email ?? undefined,
+      metadata: tag,
+      allow_discount_codes: true,
+      success_url: `${origin}/checkout/success?checkout_id={CHECKOUT_ID}`,
+      return_url: `${origin}/checkout?canceled=1`,
+    },
   });
 
-  if (!session.url) throw new Error("Stripe did not return a checkout URL");
-  redirect(session.url);
+  if (!checkout.url) throw new Error("Polar did not return a checkout URL");
+  redirect(checkout.url);
 }
 
 /**
  * Ad-matching signals, captured ONLY if the visitor accepted marketing cookies.
- * Stored in Stripe metadata so the webhook can send a server-side Purchase event.
+ * Stored in Polar checkout metadata so the webhook can send a server-side Purchase event.
  */
 async function adSignals(): Promise<Record<string, string>> {
   const jar = await cookies();

@@ -1,28 +1,30 @@
-# Launch checklist — First Pregnancy Planner
+# Launch checklist — DueDuo
 
-Work through the parts in order. Test everything first (Parts 1–4), then switch to live payments (Part 5).
+Production runs at **https://dueduo.com** on Vercel, with Supabase for sign-in and data and **Polar** for payments.
+Polar is the merchant of record: it sells the product, handles VAT/sales tax and refunds, and sends receipts.
 
 ---
 
 ## 0. Before you take real money
 
-- [ ] **Terms, Privacy Policy and Refund Policy pages.** Stripe expects them to be reachable from your site. Link them in the footer (`src/components/landing/sections.tsx` → `SiteFooter`).
+- [x] **Terms, Privacy Policy and Refund Policy pages** are live and linked in the footer. They name Polar as merchant of record.
 - [ ] **The guarantee matches your refund policy.** `SITE.guaranteeDays` in `src/lib/site-config.ts` is set to `14`. Change it, or set it to `null` to hide it.
-- [ ] **Support email.** Set `NEXT_PUBLIC_SUPPORT_EMAIL`.
+- [ ] **Support inbox.** `NEXT_PUBLIC_SUPPORT_EMAIL` must be a mailbox you actually read (refund and deletion requests go there).
 - [ ] **Medical review** of `src/lib/roadmap.ts`, `src/lib/scripts.ts` and `src/lib/budget.ts` by a midwife or doctor.
-- [ ] **Tax.** You are selling a digital product internationally, which can create VAT/GST obligations (Swiss VAT, EU OSS, etc.). Either turn on **Stripe Tax** (Checkout supports it) or confirm your setup with an accountant.
+- [ ] **Legal review** of `/terms`, `/privacy` and `/refund`.
+- [x] **Tax** is handled by Polar as merchant of record.
 
 ---
 
 ## 1. Install and database
 
 ```bash
-npm i stripe server-only
+npm install
 ```
 
-In the Supabase **SQL Editor**, run `supabase/migrations/0003_payments.sql`.
+In the Supabase **SQL Editor**, run the migrations in `supabase/migrations/` in order (`0001` → `0004`).
 
-Your own test account won't have paid yet. To skip the paywall for yourself:
+To skip the paywall for your own account:
 
 ```sql
 update public.profiles set has_access = true
@@ -31,97 +33,100 @@ where id = (select id from auth.users where email = 'YOU@EXAMPLE.COM');
 
 ---
 
-## 2. Stripe (test mode first)
+## 2. Polar
 
-1. **Product catalog → Add product**
-   - Name: `First Pregnancy Planner`
-   - Price: **29.00 USD**, **One-off**
-   - Copy the **Price ID** (`price_...`) into `STRIPE_PRICE_ID`.
-2. **Developers → API keys:** copy the secret key (`sk_test_...`) into `STRIPE_SECRET_KEY`.
-3. **Settings → Business → Customer emails:** turn on *Successful payments* so buyers get a receipt.
-4. **Settings → Branding:** add your logo and brand color `#c0615a`.
-5. **Optional: promo codes** (checkout already accepts them). Create a 100% coupon plus a promotion code, e.g. `FRIENDS`, for testers and influencers.
+Use **sandbox.polar.sh** for local testing (with `POLAR_SERVER=sandbox`) and **polar.sh** for production. They have separate products, tokens and webhooks.
 
-### Test the webhook locally with the Stripe CLI
+1. **Products → New product:** `DueDuo`, one-time price **$29**. Copy the product ID into `POLAR_PRODUCT_ID`.
+2. **Settings → Developers → New token** with the `checkouts:read` and `checkouts:write` scopes. Copy it into `POLAR_ACCESS_TOKEN`.
+3. **Settings → Webhooks → Add endpoint:**
+   - URL: `https://dueduo.com/api/webhook/polar`
+   - Events: `order.paid` and `order.refunded`
+   - Copy its secret into `POLAR_WEBHOOK_SECRET`.
+4. **Optional: discount codes** (checkout already accepts them). A 100% code is handy for testers and influencers. Free orders send no ad Purchase event.
 
-```bash
-stripe login
-stripe listen --forward-to localhost:3001/api/stripe/webhook
-# copy the "whsec_..." it prints into STRIPE_WEBHOOK_SECRET, then restart `npm run dev`
-```
-
-Then run through it yourself:
-
-1. Log in with a **new** email and you should land on `/checkout`.
-2. Pay with the test card `4242 4242 4242 4242`, any future date, any CVC.
-3. You should go to `/onboarding`, and in Supabase `profiles.has_access` should now be `true`.
-4. Refund the payment in the Stripe dashboard. `has_access` should go back to `false`, and the user is sent to `/checkout` again.
+How it works: the Unlock button creates a Polar checkout tagged with the user's ID (`src/app/checkout/actions.ts`). After payment, `/checkout/success` confirms it with Polar and the `order.paid` webhook does the same in the background. Either one sets `profiles.has_access = true` (`src/lib/billing.ts`). A full refund (`order.refunded`) sets it back to `false`.
 
 ---
 
 ## 3. Supabase for production
 
 1. **Project Settings → API keys:** copy the **secret key** (`sb_secret_...`, or the legacy `service_role` key) into `SUPABASE_SERVICE_ROLE_KEY`. It is server-only: never prefix it with `NEXT_PUBLIC_`.
-2. **Custom SMTP (required).** Supabase's built-in email only reaches your own team members and is heavily rate-limited, so real customers would never get their login link.
-   - Create a free account with an email provider (e.g. Resend or Postmark) and verify your domain (they give you the DNS records).
-   - Go to **Authentication → Emails → SMTP Settings** and turn on custom SMTP. For Resend: host `smtp.resend.com`, port `465`, user `resend`, password = your API key. Sender: `hello@yourdomain.com`.
-   - Under **Authentication → Rate limits**, raise the email limit, e.g. 100 per hour.
-3. **Authentication → Emails → Templates → Magic Link:** brand the email. For example, subject "Your First Pregnancy Planner login link", with a warm one-line intro.
-4. **Authentication → URL Configuration:**
-   - **Site URL:** `https://yourdomain.com`
-   - **Redirect URLs** (add all of these):
-     - `https://yourdomain.com/**`
-     - `http://localhost:3001/**`
-     - `https://*-YOUR-VERCEL-TEAM.vercel.app/**` (for preview deployments)
+2. **Authentication → URL Configuration:**
+   - **Site URL:** `https://dueduo.com`
+   - **Redirect URLs:** `https://dueduo.com/**`, `http://localhost:3001/**`, and `https://*-YOUR-VERCEL-TEAM.vercel.app/**` for preview deployments.
+3. **Custom SMTP with Resend (required).** Supabase's built-in email only reaches members of your Supabase team and is heavily rate-limited, so real customers would never get their login link.
+
+   **a. Verify the domain in Resend**
+   1. Sign up at resend.com, open **Domains → Add domain**, enter `dueduo.com` and pick the **EU (Ireland)** region.
+   2. Resend shows 3–4 DNS records. In **Hostinger → Domains → dueduo.com → DNS / Nameservers → DNS records**, add each one exactly as shown:
+      - **TXT** `resend._domainkey` (DKIM key)
+      - **MX** `send` → `feedback-smtp.eu-west-1.amazonses.com`, priority `10`
+      - **TXT** `send` → `v=spf1 include:amazonses.com ~all`
+      - Recommended: **TXT** `_dmarc` → `v=DMARC1; p=none;`
+
+      In Hostinger's *Name* field, enter only the part before `.dueduo.com` (e.g. `send`). These records sit on the `send` subdomain, so they don't touch your main mail (MX) records or the Vercel A/CNAME records.
+   3. Back in Resend, click **Verify DNS records**. It usually turns green within minutes (up to a few hours).
+
+   **b. Create an API key**
+   - **API Keys → Create API key**, permission **Sending access**, domain `dueduo.com`. Copy it (it is shown once).
+
+   **c. Connect it to Supabase**
+   - **Authentication → Emails → SMTP Settings → Enable custom SMTP:**
+     | Field | Value |
+     |---|---|
+     | Sender email | `hello@dueduo.com` (any address on dueduo.com) |
+     | Sender name | `DueDuo` |
+     | Host | `smtp.resend.com` |
+     | Port | `465` |
+     | Username | `resend` |
+     | Password | the Resend API key |
+   - **Authentication → Rate limits:** raise *Rate limit for sending emails* to about **100 per hour**.
+
+   **d. Brand the email**
+   - **Authentication → Emails → Templates → Magic Link:** subject `Your DueDuo login link`, with a warm one-line intro above the button.
+
+   **e. Test it**
+   - In a private window, sign up on dueduo.com with an email that is **not** on your Supabase team (e.g. a fresh Gmail). The link should arrive within a minute, and not in spam.
+   - **Resend → Emails** shows each message and whether it was delivered.
 
 ---
 
-## 4. Deploy to Vercel
+## 4. Vercel
 
-1. Push the project to a **private** GitHub repo. `.env.local` is already gitignored, so never commit your keys.
-2. **vercel.com → Add New → Project → Import** the repo. The framework is detected automatically (Next.js).
-3. **Environment Variables:** add each of these for **Production** and **Preview**. Use Stripe **test** keys for Preview.
+1. The GitHub repo is connected; every push to `main` deploys to production.
+2. **Environment Variables (Production):**
 
    | Name | Value |
    |---|---|
    | `NEXT_PUBLIC_SUPABASE_URL` | from Supabase |
    | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | publishable key |
    | `SUPABASE_SERVICE_ROLE_KEY` | secret key |
-   | `NEXT_PUBLIC_SITE_URL` | `https://yourdomain.com` |
-   | `NEXT_PUBLIC_SUPPORT_EMAIL` | `hello@yourdomain.com` |
-   | `STRIPE_SECRET_KEY` | `sk_test_...` for now |
-   | `STRIPE_PRICE_ID` | `price_...` (test) |
-   | `STRIPE_WEBHOOK_SECRET` | from step 4.5 below |
+   | `NEXT_PUBLIC_SUPPORT_EMAIL` | your support address on dueduo.com |
+   | `POLAR_ACCESS_TOKEN` | production token |
+   | `POLAR_PRODUCT_ID` | production product ID |
+   | `POLAR_WEBHOOK_SECRET` | production webhook secret |
 
-4. **Deploy.** Then go to **Settings → Domains**, add `yourdomain.com` and `www.yourdomain.com`, and create the DNS records Vercel shows you at your registrar (Hostinger works fine).
-5. **Stripe → Developers → Webhooks → Add endpoint:**
-   - URL: `https://yourdomain.com/api/stripe/webhook`
-   - Events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `charge.refunded`
-   - Copy its **signing secret** into `STRIPE_WEBHOOK_SECRET` in Vercel, then **Redeploy**.
+   For **Preview**, use sandbox values and add `POLAR_SERVER=sandbox` and `NEXT_PUBLIC_SITE_URL`. Production always uses `https://dueduo.com` (`SITE.url` in `src/lib/site-config.ts`), so `NEXT_PUBLIC_SITE_URL` isn't needed there.
+3. **Settings → Domains:** `dueduo.com` and `www.dueduo.com`, with DNS at Hostinger.
 
 > `NEXT_PUBLIC_*` values are baked in at build time. After changing any of them, click **Redeploy**.
 
 ---
 
-## 5. Go live
+## 5. Production smoke test
 
-1. In Stripe, **activate your account** (business details and bank account), then switch to **Live mode**.
-2. Create the product and **$29** price again in live mode. Live and test use separate IDs.
-3. Add the **live webhook endpoint** (same URL and events as above) and copy its live signing secret.
-4. In Vercel **Production** env vars, replace `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID` and `STRIPE_WEBHOOK_SECRET` with the live values, then **Redeploy**.
-5. **Production smoke test:**
-   - [ ] The landing page loads on your phone, and sharing the link on WhatsApp shows the preview card.
-   - [ ] Sign up with a real email and receive the magic link (this proves SMTP works).
-   - [ ] Pay with a real card or a 100% promo code, land on onboarding, and finish it.
-   - [ ] Invite a partner from a second email and check they see the shared plan.
-   - [ ] Print a visit summary.
-   - [ ] Refund your own test payment in Stripe.
+- [x] Pay with a 100% discount code, land on onboarding, and check `has_access = true`.
+- [ ] Sign up with an outside email and receive the magic link (proves SMTP works).
+- [ ] The landing page loads on your phone, and sharing the link on WhatsApp shows the preview card.
+- [ ] Invite a partner from a second email and check they see the shared plan.
+- [ ] Print a visit summary.
+- [ ] Refund a test order in Polar and check `has_access` goes back to `false`.
 
 ---
 
-## 6. First week after launch
+## 6. Before ads and the first week after launch
 
-- **Vercel → Analytics:** enable it for visits and conversion.
-- **Stripe → Payments:** check the webhook shows `200` responses (Developers → Webhooks → your endpoint).
-- **Ads:** point Meta and TikTok ads at `/`. Add your pixel and conversion event on `/onboarding` (only reached after payment) when you're ready.
+- **Tracking:** follow `TRACKING.md` (Meta, TikTok, Vercel Analytics). Test with a real paid order.
+- **Polar → Webhooks:** check deliveries show `200`.
 - **Real testimonials:** once your first customers give permission, add them to the landing page. Never invent reviews.

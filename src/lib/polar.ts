@@ -32,6 +32,17 @@ export type PolarOrder = {
   customer: { email: string | null; external_id?: string | null };
 };
 
+export class PolarApiError extends Error {
+  constructor(
+    readonly status: number,
+    readonly body: string,
+    request: string,
+  ) {
+    super(`Polar ${request} → ${status} ${body}`);
+    this.name = "PolarApiError";
+  }
+}
+
 export async function polarApi<T>(path: string, init: { method?: "GET" | "POST"; body?: unknown } = {}): Promise<T> {
   const token = process.env.POLAR_ACCESS_TOKEN;
   if (!token) throw new Error("POLAR_ACCESS_TOKEN is not set");
@@ -43,7 +54,7 @@ export async function polarApi<T>(path: string, init: { method?: "GET" | "POST";
     cache: "no-store",
     signal: AbortSignal.timeout(10000),
   });
-  if (!res.ok) throw new Error(`Polar ${init.method ?? "GET"} ${path} → ${res.status} ${await res.text()}`);
+  if (!res.ok) throw new PolarApiError(res.status, await res.text(), `${init.method ?? "GET"} ${path}`);
   return (await res.json()) as T;
 }
 

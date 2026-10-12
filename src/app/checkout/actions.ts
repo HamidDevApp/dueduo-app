@@ -6,7 +6,7 @@ import { CONSENT_COOKIE } from "@/lib/consent";
 import { SITE } from "@/lib/site-config";
 import { siteOrigin } from "@/lib/site";
 import { getSpace } from "@/lib/space";
-import { polarApi, type PolarCheckout } from "@/lib/polar";
+import { PolarApiError, polarApi, type PolarCheckout } from "@/lib/polar";
 
 export async function startCheckout() {
   const { user, role, profile } = await getSpace();
@@ -18,19 +18,29 @@ export async function startCheckout() {
 
   const origin = await siteOrigin();
   // Copied by Polar onto the order, so the webhook knows who paid and can send the ad Purchase event.
-  const tag = { product: SITE.productKey, user_id: user.id, ...(await adSignals()) };
+  const required = { product: SITE.productKey, user_id: user.id };
+  const base = {
+    products: [productId],
+    allow_discount_codes: true,
+    success_url: `${origin}/checkout/success?checkout_id={CHECKOUT_ID}`,
+    return_url: `${origin}/checkout?canceled=1`,
+  };
 
-  const checkout = await polarApi<PolarCheckout>("/v1/checkouts/", {
-    method: "POST",
-    body: {
-      products: [productId],
-      customer_email: user.email ?? undefined,
-      metadata: tag,
-      allow_discount_codes: true,
-      success_url: `${origin}/checkout/success?checkout_id={CHECKOUT_ID}`,
-      return_url: `${origin}/checkout?canceled=1`,
-    },
-  });
+  let checkout: PolarCheckout;
+  try {
+    checkout = await polarApi<PolarCheckout>("/v1/checkouts/", {
+      method: "POST",
+      body: { ...base, customer_email: user.email ?? undefined, metadata: { ...required, ...(await adSignals()) } },
+    });
+  } catch (err) {
+    if (!(err instanceof PolarApiError && err.status === 422)) throw err;
+    // Never block a sale on optional extras: retry with only what fulfillment needs (no ad signals, no email prefill).
+    console.error("[checkout] Polar rejected the checkout, retrying without extras:", err.body);
+    checkout = await polarApi<PolarCheckout>("/v1/checkouts/", {
+      method: "POST",
+      body: { ...base, metadata: required },
+    });
+  }
 
   if (!checkout.url) throw new Error("Polar did not return a checkout URL");
   redirect(checkout.url);
@@ -45,14 +55,19 @@ async function adSignals(): Promise<Record<string, string>> {
   if (jar.get(CONSENT_COOKIE)?.value !== "granted") return { ad_consent: "denied" };
 
   const h = await headers();
-  const clip = (v: string | null | undefined) => (v ? v.slice(0, 450) : "");
-  return {
-    ad_consent: "granted",
-    ip: clip(h.get("x-forwarded-for")?.split(",")[0]?.trim()),
-    ua: clip(h.get("user-agent")),
-    fbp: clip(jar.get("_fbp")?.value),
-    fbc: clip(jar.get("_fbc")?.value),
-    ttp: clip(jar.get("_ttp")?.value),
-    ttclid: clip(jar.get("dd_ttclid")?.value),
+  const signals: Record<string, string | undefined> = {
+    ip: h.get("x-forwarded-for")?.split(",")[0]?.trim(),
+    ua: h.get("user-agent") ?? undefined,
+    fbp: jar.get("_fbp")?.value,
+    fbc: jar.get("_fbc")?.value,
+    ttp: jar.get("_ttp")?.value,
+    ttclid: jar.get("dd_ttclid")?.value,
   };
+
+  // Polar metadata values must be non-empty strings of at most 500 characters: drop missing cookies, clip the rest.
+  const out: Record<string, string> = { ad_consent: "granted" };
+  for (const [key, value] of Object.entries(signals)) {
+    if (value) out[key] = value.slice(0, 450);
+  }
+  return out;
 }

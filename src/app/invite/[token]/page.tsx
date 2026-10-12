@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { HeartHandshake } from "lucide-react";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { createClient } from "@/lib/supabase/server";
 import { acceptInvite } from "./actions";
 
@@ -47,12 +48,7 @@ export default async function InvitePage({
         )}
 
         <form action={acceptInvite.bind(null, token)} className="mt-6">
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-brand px-4 py-3 font-semibold text-white hover:bg-brand-strong"
-          >
-            Join the plan
-          </button>
+          <SubmitButton label="Join the plan" pendingLabel="Joining…" />
         </form>
         <p className="mt-3 text-xs text-muted">
           By joining you agree to our{" "}

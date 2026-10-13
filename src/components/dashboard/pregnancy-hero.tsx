@@ -17,7 +17,7 @@ export function PregnancyHero({ status }: { status: PregnancyStatus | null }) {
           </div>
           <Link
             href="/onboarding"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep"
           >
             Add due date <ArrowRight className="size-4" />
           </Link>

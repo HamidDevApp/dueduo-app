@@ -95,7 +95,7 @@ export default async function SettingsPage() {
           {isOwner && (
             <Link
               href="/onboarding"
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-brand hover:bg-brand-soft"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-brand-strong hover:bg-brand-soft"
             >
               <Pencil className="size-4" aria-hidden /> Edit
             </Link>
@@ -131,7 +131,7 @@ export default async function SettingsPage() {
         {isOwner && (
           <p className="mt-4 text-xs text-muted">
             Income and leave details live in{" "}
-            <Link href="/budget#leave-plan" className="font-semibold text-brand hover:text-brand-strong">
+            <Link href="/budget#leave-plan" className="font-semibold text-brand-strong hover:text-brand-deep">
               Smart budget → Leave plan
             </Link>
             .
@@ -171,7 +171,7 @@ export default async function SettingsPage() {
               <div className="flex flex-wrap items-start gap-2">
                 <Link
                   href="/co-pilot"
-                  className="rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-white hover:bg-brand-strong"
+                  className="rounded-lg bg-brand-strong px-3 py-2 text-sm font-semibold text-white hover:bg-brand-deep"
                 >
                   {pendingInvites > 0 ? "Open invite" : "Invite partner"}
                 </Link>
@@ -208,7 +208,7 @@ export default async function SettingsPage() {
         <div className="mt-3 space-y-3 text-sm">
           <p>
             Questions or problems?{" "}
-            <a href={`mailto:${SUPPORT_EMAIL}`} className="font-semibold text-brand hover:text-brand-strong">
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="font-semibold text-brand-strong hover:text-brand-deep">
               {SUPPORT_EMAIL}
             </a>
           </p>

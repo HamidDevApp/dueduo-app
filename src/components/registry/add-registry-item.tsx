@@ -17,7 +17,7 @@ export function AddRegistryItem({ priority, currency }: { priority: RegistryPrio
           setKey((k) => k + 1);
           setOpen(true);
         }}
-        className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-semibold text-brand hover:bg-brand-soft"
+        className="inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-sm font-semibold text-brand-strong hover:bg-brand-soft"
       >
         <Plus className="size-4" aria-hidden /> Add item
       </button>

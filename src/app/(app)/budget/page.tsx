@@ -133,7 +133,7 @@ export default async function BudgetPage() {
             </div>
           </div>
           <form action={importStarterKit}>
-            <button type="submit" className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong">
+            <button type="submit" className="rounded-xl bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep">
               Add the starter list
             </button>
           </form>

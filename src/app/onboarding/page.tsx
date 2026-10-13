@@ -84,7 +84,7 @@ export default async function OnboardingPage({ searchParams }: { searchParams: P
 
         {isEditing && (
           <p className="mt-6 text-center text-sm">
-            <Link href="/dashboard" className="font-semibold text-brand hover:text-brand-strong">
+            <Link href="/dashboard" className="font-semibold text-brand-strong hover:text-brand-deep">
               ← Back to dashboard
             </Link>
           </p>

@@ -118,7 +118,7 @@ export function TaskItem({ task, done, owner, labels, action, context }: Props) 
             {action.kind === "link" ? (
               <Link
                 href={action.href}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-canvas px-3 py-1.5 text-sm font-semibold text-brand hover:text-brand-strong"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-canvas px-3 py-1.5 text-sm font-semibold text-brand-strong hover:text-brand-deep"
               >
                 {action.label} <ArrowRight className="size-4" aria-hidden />
               </Link>

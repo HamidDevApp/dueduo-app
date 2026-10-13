@@ -45,7 +45,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
     <main className="min-h-dvh px-4 py-10 sm:py-16">
       <div className="mx-auto max-w-md">
         <div className="text-center">
-          <p className="text-sm font-semibold tracking-wide text-brand uppercase">{SITE.name}</p>
+          <p className="text-sm font-semibold tracking-wide text-brand-strong uppercase">{SITE.name}</p>
           <h1 className="mt-2 font-display text-3xl sm:text-4xl">Unlock your command center</h1>
           <p className="mt-2 text-muted">Everything you need from positive test to delivery day — in one calm place.</p>
         </div>

@@ -48,7 +48,7 @@ export function AppointmentCard({ appointment: a, providers, locations, variant,
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-            {variant === "next" && <span className="rounded-full bg-brand px-2.5 py-0.5 text-white">Next up</span>}
+            {variant === "next" && <span className="rounded-full bg-brand-strong px-2.5 py-0.5 text-white">Next up</span>}
             {variant === "needs-update" && (
               <span className="rounded-full bg-brand-soft px-2.5 py-0.5 text-brand-strong">Did this happen?</span>
             )}
@@ -80,7 +80,7 @@ export function AppointmentCard({ appointment: a, providers, locations, variant,
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-soft px-3 py-2 text-sm font-semibold text-brand-strong hover:bg-brand/15"
             >
               <Printer className="size-4" aria-hidden /> Prepare printout
-              {openQuestions > 0 && <span className="rounded-full bg-brand px-1.5 text-xs text-white">{openQuestions}</span>}
+              {openQuestions > 0 && <span className="rounded-full bg-brand-strong px-1.5 text-xs text-white">{openQuestions}</span>}
             </Link>
           )}
           <button

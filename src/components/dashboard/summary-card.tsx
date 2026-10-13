@@ -32,7 +32,7 @@ export function SummaryCard({ href, title, icon: Icon, value, hint, progress, ct
 
       <Link
         href={href}
-        className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-brand hover:text-brand-strong"
+        className="mt-auto inline-flex items-center gap-1 pt-5 text-sm font-semibold text-brand-strong hover:text-brand-deep"
       >
         {cta} <ArrowRight className="size-4" />
       </Link>

@@ -5,17 +5,21 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
 
-  /* Semantic palette — warm, calm, reassuring */
-  --color-canvas: #faf6f2;       /* page background */
-  --color-surface: #ffffff;      /* cards */
-  --color-ink: #2b2320;          /* primary text */
-  --color-muted: #7a6d66;        /* secondary text */
-  --color-line: #ece3dc;         /* borders */
-  --color-brand: #c0615a;        /* clay rose */
-  --color-brand-strong: #a44d47;
-  --color-brand-soft: #f7e6e2;
-  --color-sage: #6f8f7a;
+  /* Semantic palette: DueDuo brand kit v1 (warm, calm, reassuring) */
+  --color-canvas: #fbf6f1;       /* Cream: page background */
+  --color-surface: #ffffff;      /* White: cards */
+  --color-ink: #2d2326;          /* Ink: primary text */
+  --color-muted: #6e6260;        /* Stone: secondary text, 5.5:1 on canvas */
+  --color-line: #ece2d8;         /* Linen: borders */
+  --color-brand: #c0615a;        /* Rose: logo, icons, large type, fills (not small text) */
+  --color-brand-strong: #9a4741; /* Rose Deep: buttons, links, small rose text (white text 6.3:1) */
+  --color-brand-deep: #843c37;   /* hover and pressed state for Rose Deep */
+  --color-brand-soft: #f6e4df;   /* Blush: tinted backgrounds */
+  --color-petal: #e7a99f;        /* Petal: soft accent fills */
+  --color-sage: #4e6b55;         /* Sage Deep: partner text, borders, solid fills (white text 5.9:1) */
+  --color-sage-light: #8fa48f;   /* Sage: partner colour for shapes, never text */
   --color-sage-soft: #e6efe8;
+  --color-honey: #e2b36b;        /* Honey: milestone highlights, never text */
 
   --radius-card: 1.25rem;
 }

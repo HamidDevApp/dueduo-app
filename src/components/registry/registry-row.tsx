@@ -41,7 +41,7 @@ export function RegistryRow({ item, currency }: { item: RegistryItem; currency: 
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Open link for ${item.name}`}
-              className="ml-1.5 inline-flex align-middle text-brand hover:text-brand-strong"
+              className="ml-1.5 inline-flex align-middle text-brand-strong hover:text-brand-deep"
             >
               <ExternalLink className="size-4" />
             </a>

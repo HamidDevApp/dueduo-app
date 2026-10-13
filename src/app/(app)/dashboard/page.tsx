@@ -108,7 +108,7 @@ export default async function DashboardPage() {
           </div>
           <Link
             href="/co-pilot"
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong"
+            className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep"
           >
             Invite now <ArrowRight className="size-4" aria-hidden />
           </Link>

@@ -18,7 +18,7 @@ export function AddAppointment({ providers, locations, startOpen = false }: { pr
           setFormKey((k) => k + 1);
           setOpen(true);
         }}
-        className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white hover:bg-brand-strong"
+        className="inline-flex items-center gap-2 rounded-xl bg-brand-strong px-5 py-3 text-sm font-semibold text-white hover:bg-brand-deep"
       >
         <Plus className="size-4" aria-hidden /> Add appointment
       </button>

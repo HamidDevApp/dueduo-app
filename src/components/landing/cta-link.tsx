@@ -9,7 +9,7 @@ type Variant = "primary" | "dark" | "light";
 
 const STYLES: Record<Variant, string> = {
   // brand-strong on white text passes WCAG AA contrast
-  primary: "bg-brand-strong text-white shadow-lg shadow-brand-strong/20 hover:bg-[#8f423d]",
+  primary: "bg-brand-strong text-white shadow-lg shadow-brand-strong/20 hover:bg-brand-deep",
   dark: "bg-ink text-canvas shadow-lg shadow-ink/15 hover:bg-ink/90",
   light: "bg-white text-ink shadow-lg shadow-black/10 hover:bg-canvas",
 };

@@ -74,7 +74,7 @@ function LoginForm() {
       <button
         type="submit"
         disabled={state === "sending"}
-        className="w-full rounded-xl bg-brand px-4 py-3 font-semibold text-white hover:bg-brand-strong disabled:opacity-60"
+        className="w-full rounded-xl bg-brand-strong px-4 py-3 font-semibold text-white hover:bg-brand-deep disabled:opacity-60"
       >
         {state === "sending" ? "Sending…" : "Send magic link"}
       </button>

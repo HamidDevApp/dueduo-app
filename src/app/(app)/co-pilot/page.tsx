@@ -104,7 +104,7 @@ export default async function CoPilotPage({
                   href={whatsappUrl(message)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white hover:bg-brand-strong"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-strong px-4 py-3 text-sm font-semibold text-white hover:bg-brand-deep"
                 >
                   <MessageCircle className="size-4" aria-hidden /> Send on WhatsApp
                 </a>
@@ -115,7 +115,7 @@ export default async function CoPilotPage({
             <form action={createPartnerInvite} className="mt-4">
               <button
                 type="submit"
-                className="rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white hover:bg-brand-strong"
+                className="rounded-xl bg-brand-strong px-4 py-3 text-sm font-semibold text-white hover:bg-brand-deep"
               >
                 Create invite link
               </button>

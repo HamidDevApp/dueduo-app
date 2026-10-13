@@ -51,7 +51,7 @@ export default async function CheckoutSuccessPage({
               If you were charged, don&apos;t worry — access is granted automatically within a few minutes. Try
               refreshing, or contact support.
             </p>
-            <Link href="/checkout" className="mt-6 inline-block font-semibold text-brand hover:text-brand-strong">
+            <Link href="/checkout" className="mt-6 inline-block font-semibold text-brand-strong hover:text-brand-deep">
               Back to checkout
             </Link>
           </>

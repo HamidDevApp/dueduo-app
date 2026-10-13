@@ -348,7 +348,7 @@ export function OnboardingWizard({ limits, defaults, needsConsent }: Props) {
           <button
             type="submit"
             disabled={pending || !dueDate}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3.5 font-semibold text-white hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-strong px-4 py-3.5 font-semibold text-white hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
           >
             {pending ? "Building your plan…" : "Build my plan"}
             {!pending && <Check className="size-4" aria-hidden />}
@@ -358,7 +358,7 @@ export function OnboardingWizard({ limits, defaults, needsConsent }: Props) {
             type="button"
             disabled={!canContinue}
             onClick={() => setStep((s) => s + 1)}
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3.5 font-semibold text-white hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-brand-strong px-4 py-3.5 font-semibold text-white hover:bg-brand-deep disabled:cursor-not-allowed disabled:opacity-60"
           >
             {step === 2 && !f.momIncome ? "Skip for now" : "Continue"}
             <ArrowRight className="size-4" aria-hidden />

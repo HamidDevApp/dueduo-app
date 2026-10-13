@@ -100,7 +100,7 @@ export function BudgetItemForm({ item, defaultNeed = "essential", currency, onDo
       )}
 
       <div className="flex gap-2">
-        <button type="submit" disabled={pending} className="rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong disabled:opacity-60">
+        <button type="submit" disabled={pending} className="rounded-xl bg-brand-strong px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep disabled:opacity-60">
           {pending ? "Saving…" : item ? "Save changes" : "Add item"}
         </button>
         <button type="button" onClick={onDone} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-muted hover:bg-canvas hover:text-ink">

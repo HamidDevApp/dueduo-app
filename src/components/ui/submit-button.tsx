@@ -9,7 +9,7 @@ export function SubmitButton({ label, pendingLabel }: { label: string; pendingLa
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-xl bg-brand px-4 py-3 font-semibold text-white hover:bg-brand-strong disabled:opacity-70"
+      className="w-full rounded-xl bg-brand-strong px-4 py-3 font-semibold text-white hover:bg-brand-deep disabled:opacity-70"
     >
       {pending ? pendingLabel : label}
     </button>

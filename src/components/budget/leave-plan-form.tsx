@@ -99,7 +99,7 @@ export function LeavePlanForm({ defaults, daysToGo, essentialsRemaining, readOnl
             <button
               type="submit"
               disabled={pending}
-              className="rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong disabled:opacity-60"
+              className="rounded-xl bg-brand-strong px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep disabled:opacity-60"
             >
               {pending ? "Saving…" : "Save leave plan"}
             </button>

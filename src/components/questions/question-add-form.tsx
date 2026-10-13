@@ -37,7 +37,7 @@ export function QuestionAddForm({ appointments }: { appointments: AppointmentOpt
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep disabled:opacity-60"
         >
           <Plus className="size-4" aria-hidden /> {pending ? "Adding…" : "Add question"}
         </button>

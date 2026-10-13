@@ -91,7 +91,7 @@ export default async function RegistryPage() {
             </div>
           </div>
           <form action={importRegistryStarter}>
-            <button type="submit" className="rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-strong">
+            <button type="submit" className="rounded-xl bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep">
               Add essentials
             </button>
           </form>

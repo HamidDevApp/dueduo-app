@@ -126,7 +126,7 @@ export default async function HospitalBagPage({ searchParams }: { searchParams: 
           <BagAddForm key={active} bag={active} />
           {missingSuggestions > 0 && (
             <form action={restoreSuggestions.bind(null, active)}>
-              <button type="submit" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-strong">
+              <button type="submit" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-strong hover:text-brand-deep">
                 <Sparkles className="size-4" aria-hidden /> Add {missingSuggestions} suggested item{missingSuggestions === 1 ? "" : "s"}
               </button>
             </form>

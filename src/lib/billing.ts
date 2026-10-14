@@ -1,6 +1,7 @@
 import "server-only";
 import { sendServerPurchase } from "@/lib/capi";
 import { UUID_RE } from "@/lib/form";
+import { sendOnboardingEmail } from "@/lib/onboarding-send";
 import { polarApi, type PolarCheckout, type PolarOrder } from "@/lib/polar";
 import { configuredOrigin } from "@/lib/site";
 import { SITE } from "@/lib/site-config";
@@ -153,6 +154,13 @@ export async function fulfillOrder(order: PolarOrder): Promise<void> {
     email: order.customer?.email ?? null,
     metadata: order.metadata ?? {},
   });
+
+  // Welcome email (once per user). Never let it fail the webhook — access is already granted.
+  try {
+    await sendOnboardingEmail(userId, "welcome");
+  } catch (err) {
+    console.error("[billing] welcome email failed", { userId, orderId: order.id }, err);
+  }
 }
 
 /** Full refund → mark the payment refunded and remove access. */

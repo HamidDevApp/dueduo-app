@@ -4,14 +4,31 @@ import type { OutgoingEmail } from "@/lib/email";
 import { SITE } from "@/lib/site-config";
 
 /**
- * The 5 onboarding emails (approved copy — keep it verbatim).
- *   welcome   → right after purchase (Polar webhook)
- *   co_pilot  → day 1, only if no partner has joined yet   ┐
- *   appointment → day 3                                     │ daily cron
- *   budget    → day 7                                       │ (/api/cron/onboarding-emails)
- *   feedback  → day 10                                      ┘
+ * The onboarding emails (approved copy — keep it verbatim).
+ *   welcome     → right after purchase (Polar webhook)
+ *   co_pilot    → day 1, only if no partner has joined yet          ┐
+ *   day2_setup  → day 2, only if no due date yet          ┐ one of  │
+ *   day2_task   → day 2, only if nothing ticked yet        ┘ the two │ daily cron
+ *   appointment → day 3                                              │ (/api/cron/onboarding-emails)
+ *   budget      → day 7                                              │
+ *   feedback    → day 10                                             ┘
  */
-export type EmailKey = "welcome" | "co_pilot" | "appointment" | "budget" | "feedback";
+export type EmailKey =
+  | "welcome"
+  | "co_pilot"
+  | "day2_setup"
+  | "day2_task"
+  | "appointment"
+  | "budget"
+  | "feedback";
+
+/** Per-buyer values some templates fill in. */
+export type TemplateVars = {
+  /** Suggested quick task (day2_task); without one, the email asks them to pick the easiest. */
+  taskTitle?: string | null;
+  /** Partner's name when the partner has joined; null when they haven't (day2_task). */
+  joinedPartnerName?: string | null;
+};
 
 type Block =
   | { p: string }
@@ -24,7 +41,7 @@ type Template = { subject: string; preview: string; blocks: Block[] };
 
 const url = (path: string) => `${SITE.url}${path}`;
 
-const TEMPLATES: Record<EmailKey, Template> = {
+const TEMPLATES: Record<EmailKey, Template | ((v: TemplateVars) => Template)> = {
   welcome: {
     subject: "Your DueDuo plan is ready",
     preview: "Three things to do first. About 10 minutes.",
@@ -35,7 +52,7 @@ const TEMPLATES: Record<EmailKey, Template> = {
         ol: [
           "Add your due date, so your roadmap shows this week's tasks.",
           "Invite your partner as your Co-Pilot. They get their own to-do list and join free.",
-          "Tick off one task this week. Small wins count.",
+          "Tick off your first task. Your Today page suggests an easy one.",
         ],
       },
       { button: "Open my plan", href: url("/dashboard") },
@@ -65,6 +82,36 @@ const TEMPLATES: Record<EmailKey, Template> = {
       { p: "It takes a minute. You send them a link, and they join from their phone." },
     ],
   },
+  day2_setup: {
+    subject: "Your plan is one date away",
+    preview: "Add your due date and DueDuo lays out every week for you both.",
+    blocks: [
+      { p: "Your DueDuo plan is ready to go. It just needs one thing from you: your due date." },
+      {
+        p: "Once it's in, DueDuo lays out what to do each week and splits it between you and your partner. Setup is four short steps.",
+      },
+      { button: "Finish setup", href: url("/onboarding") },
+      {
+        p: "Don't have an exact date yet? Use the one from your doctor or midwife, or your best guess for now. You can change it anytime in Settings.",
+      },
+      { p: "Stuck on anything? Just reply to this email. We read every reply." },
+    ],
+  },
+  day2_task: (v) => ({
+    subject: "Your first small win this week",
+    preview: "One easy task to get you started.",
+    blocks: [
+      { p: "Your plan is set up, and this week's list is waiting on your Today page." },
+      { p: v.taskTitle ? `Here's an easy one to start with: "${v.taskTitle}"` : "Pick the easiest one to start with." },
+      {
+        p: v.joinedPartnerName
+          ? `Tick it off and ${v.joinedPartnerName} sees it's done too, so you don't have to remember to mention it.`
+          : "Tick it off and that's one less thing to carry around in your head.",
+      },
+      { button: "See this week", href: url("/roadmap") },
+      { p: "Stuck on anything? Just reply to this email. We read every reply." },
+    ],
+  }),
   appointment: {
     subject: "Before your next appointment",
     preview: "One page that saves the \"I forgot to ask\" moment.",
@@ -184,8 +231,12 @@ function blockText(b: Block): string {
 export type RenderedEmail = Omit<OutgoingEmail, "to">;
 
 /** Renders one email. `userId` adds the unsubscribe link (every email except the welcome one). */
-export function renderOnboardingEmail(key: EmailKey, opts: { firstName: string; userId?: string }): RenderedEmail {
-  const t = TEMPLATES[key];
+export function renderOnboardingEmail(
+  key: EmailKey,
+  opts: { firstName: string; userId?: string; vars?: TemplateVars },
+): RenderedEmail {
+  const entry = TEMPLATES[key];
+  const t = typeof entry === "function" ? entry(opts.vars ?? {}) : entry;
   const unsub = key !== "welcome" && opts.userId ? unsubscribeUrl(opts.userId) : null;
   const greeting = `Hi ${opts.firstName},`;
   const address = `${SITE.legal.operator}, ${SITE.legal.address}`;

@@ -48,6 +48,8 @@ export type RoadmapTask = {
   /** Rough time needed, so tasks feel doable. */
   minutes: number;
   essential?: boolean;
+  /** The one quick, one-off task per stage that "Your first steps" suggests (at most one per stage). */
+  quickWin?: boolean;
   action?: TaskAction;
 };
 
@@ -122,7 +124,7 @@ export const ROADMAP: RoadmapStage[] = [
       { key: "w04-book-first-visit", title: "Book the first prenatal appointment", detail: "Call your doctor, midwife or clinic. First visits usually happen around weeks 8–10, and slots fill up.", owner: "partner", category: "medical", minutes: 15, essential: true, action: { type: "link", href: "/appointments", label: "Add the appointment" } },
       { key: "w04-review-meds", title: "Review every medication and supplement", detail: "Ask a doctor or pharmacist before stopping or continuing anything, including painkillers, acne products and herbal remedies.", owner: "mom", category: "medical", minutes: 15, essential: true, action: { type: "link", href: "/questions", label: "Add to doctor questions" } },
       { key: "w04-alcohol-smoking", title: "Stop alcohol, smoking and vaping", detail: "There is no known safe amount of alcohol in pregnancy. Ask your provider about free quit-support if you need it.", owner: "mom", category: "health", minutes: 5, essential: true },
-      { key: "w04-food-safety", title: "Learn the food-safety basics", detail: "Avoid unpasteurized dairy, raw or undercooked meat, eggs and fish, and high-mercury fish. Keep caffeine under about 200 mg a day.", owner: "together", category: "health", minutes: 10 },
+      { key: "w04-food-safety", quickWin: true, title: "Learn the food-safety basics", detail: "Avoid unpasteurized dairy, raw or undercooked meat, eggs and fish, and high-mercury fish. Keep caffeine under about 200 mg a day.", owner: "together", category: "health", minutes: 10 },
       { key: "w04-insurance", title: "Check maternity coverage", detail: "Find out what's covered for prenatal care, scans, delivery and the newborn, plus deductibles. Save the policy number in the app.", owner: "partner", category: "admin", minutes: 30 },
       { key: "w04-partner-invite", title: "Invite your partner as Co-Pilot", detail: "Send the invite so tasks can be shared from day one. Your partner gets their own login and task list.", why: "Sharing the mental load early prevents burnout later.", owner: "mom", category: "wellbeing", minutes: 2, essential: true, action: { type: "script", scriptId: "partner-invite", label: "Send on WhatsApp" } },
     ],
@@ -139,7 +141,7 @@ export const ROADMAP: RoadmapStage[] = [
     partnerFocus: "Take over dinners and cleaning up the kitchen — smells can be the hardest part of this stage.",
     tasks: [
       { key: "w07-family-history", title: "Write down both families' medical history", detail: "Genetic conditions, twins, diabetes, high blood pressure and any past pregnancy complications.", owner: "together", category: "medical", minutes: 20, essential: true, action: { type: "link", href: "/questions", label: "Add to visit notes" } },
-      { key: "w07-first-questions", title: "Add your first questions for the doctor", detail: "Symptoms, exercise, travel, work hazards, and which tests are recommended for you.", owner: "mom", category: "medical", minutes: 10, action: { type: "link", href: "/questions", label: "Open doctor questions" } },
+      { key: "w07-first-questions", quickWin: true, title: "Add your first questions for the doctor", detail: "Symptoms, exercise, travel, work hazards, and which tests are recommended for you.", owner: "mom", category: "medical", minutes: 10, action: { type: "link", href: "/questions", label: "Open doctor questions" } },
       { key: "w07-print-summary", title: "Print or save your visit summary", detail: "Take a one-page summary with your questions, symptoms and history so nothing is forgotten in the room.", why: "Most people forget half their questions once the appointment starts.", owner: "mom", category: "medical", minutes: 2, action: { type: "link", href: "/appointments/print", label: "Open visit printout" } },
       { key: "w07-nausea-plan", title: "Make a nausea plan", detail: "Small frequent meals, crackers by the bed, ginger. Call your provider if you can't keep fluids down for 24 hours.", owner: "mom", category: "health", minutes: 10 },
       { key: "w07-partner-chores", title: "Partner takes over strong-smell chores", detail: "Cooking, bins and the fridge clean-out. If you have a cat, the partner takes over the litter box.", why: "Cat litter can carry toxoplasmosis, which is risky in pregnancy.", owner: "partner", category: "wellbeing", minutes: 5 },
@@ -159,7 +161,7 @@ export const ROADMAP: RoadmapStage[] = [
     tasks: [
       { key: "w09-screening-options", title: "Decide on screening with your provider", detail: "Options may include NIPT (cell-free DNA, from about week 10) and first-trimester combined screening.", owner: "together", category: "medical", minutes: 30, essential: true, action: { type: "link", href: "/questions", label: "Add screening questions" } },
       { key: "w09-dental", title: "Book a dental check-up", detail: "Gum problems are more common in pregnancy, and routine dental care is safe. Tell the dentist you're pregnant.", owner: "mom", category: "health", minutes: 10 },
-      { key: "w09-budget-start", title: "Set up your baby budget", detail: "Start with medical costs and your leave income plan. Gear comes later — and less of it than you think.", why: "Knowing your numbers early is the biggest money-stress reducer.", owner: "together", category: "money", minutes: 20, essential: true, action: { type: "link", href: "/budget#leave-plan", label: "Open leave plan" } },
+      { key: "w09-budget-start", quickWin: true, title: "Set up your baby budget", detail: "Start with medical costs and your leave income plan. Gear comes later — and less of it than you think.", why: "Knowing your numbers early is the biggest money-stress reducer.", owner: "together", category: "money", minutes: 20, essential: true, action: { type: "link", href: "/budget#leave-plan", label: "Open leave plan" } },
       { key: "w09-leave-policy", title: "Quietly read both parental leave policies", detail: "Find the notice deadline, paid weeks and pay rate for each of you. No need to tell work yet.", owner: "together", category: "admin", minutes: 30, action: { type: "link", href: "/budget#leave-plan", label: "Enter leave details" } },
     ],
   },
@@ -177,7 +179,7 @@ export const ROADMAP: RoadmapStage[] = [
       { key: "w11-nt-scan", title: "Attend your 11–14 week scan if offered", detail: "It often includes dating and nuchal translucency measurement.", owner: "together", category: "medical", minutes: 60, essential: true },
       { key: "w11-warning-signs", title: "Both save the warning-signs list", detail: "Know when to call your provider or go to emergency care. Both phones, not just hers.", owner: "together", category: "medical", minutes: 5, essential: true },
       { key: "w11-exercise", title: "Get cleared for exercise and start a routine", detail: "Most people can aim for about 150 minutes of moderate activity a week, like brisk walking or swimming.", owner: "mom", category: "health", minutes: 10 },
-      { key: "w11-tell-family", title: "Tell your inner circle", detail: "Send the message to close family, and ask them to keep it private until you announce.", owner: "together", category: "boundaries", minutes: 10, action: { type: "script", scriptId: "tell-family", label: "Use the script" } },
+      { key: "w11-tell-family", quickWin: true, title: "Tell your inner circle", detail: "Send the message to close family, and ask them to keep it private until you announce.", owner: "together", category: "boundaries", minutes: 10, action: { type: "script", scriptId: "tell-family", label: "Use the script" } },
       { key: "w11-keep-private", title: "Ask people not to post the news", detail: "Head off accidental social-media announcements before they happen.", owner: "partner", category: "boundaries", minutes: 5, action: { type: "script", scriptId: "keep-it-private", label: "Use the script" } },
       { key: "w11-work-plan", title: "Plan when to tell your employer", detail: "Check your country's legal notice deadline so you're protected, and decide what you'll ask for.", owner: "mom", category: "admin", minutes: 20 },
     ],
@@ -197,7 +199,7 @@ export const ROADMAP: RoadmapStage[] = [
     tasks: [
       { key: "w14-tell-work", title: "Book the conversation with your manager", detail: "Use the script to request a private meeting, share the news in person, then confirm dates by email.", owner: "mom", category: "boundaries", minutes: 15, action: { type: "script", scriptId: "tell-work", label: "Use the script" } },
       { key: "w14-childcare", title: "Research childcare and join waitlists", detail: "Daycare and nanny waitlists can be many months long in some areas. Note the cost of each option in the budget.", owner: "partner", category: "baby-prep", minutes: 60, essential: true, action: { type: "link", href: "/budget", label: "Add costs to budget" } },
-      { key: "w14-skip-list", title: "Read the 'Skip list' before buying anything", detail: "Go through what babies actually need in the first 3 months vs. what marketing says they need.", why: "Most families overspend on gear they barely use.", owner: "together", category: "money", minutes: 10, essential: true, action: { type: "link", href: "/budget#skip-list", label: "Open the Skip list" } },
+      { key: "w14-skip-list", quickWin: true, title: "Read the 'Skip list' before buying anything", detail: "Go through what babies actually need in the first 3 months vs. what marketing says they need.", why: "Most families overspend on gear they barely use.", owner: "together", category: "money", minutes: 10, essential: true, action: { type: "link", href: "/budget#skip-list", label: "Open the Skip list" } },
       { key: "w14-registry-start", title: "Start your registry with must-haves only", detail: "Car seat, safe sleep space, feeding basics, diapers. Mark each as Must / Nice / Later.", owner: "mom", category: "baby-prep", minutes: 30, action: { type: "link", href: "/registry", label: "Open registry" } },
       { key: "w14-maternity-clothes", title: "Get a few maternity basics", detail: "Stretchy trousers, a supportive bra and a couple of tops. Borrow or buy second-hand where you can.", owner: "mom", category: "money", minutes: 30 },
       { key: "w14-sleep-position", title: "Start getting used to sleeping on your side", detail: "A pillow between the knees helps. From the third trimester, side-sleeping is recommended.", owner: "mom", category: "health", minutes: 5 },
@@ -218,7 +220,7 @@ export const ROADMAP: RoadmapStage[] = [
       { key: "w17-birth-place", title: "Compare hospitals or birth centers", detail: "Check insurance coverage, NICU level, visiting rules, and whether you can tour.", owner: "together", category: "birth", minutes: 45, essential: true },
       { key: "w17-classes", title: "Book antenatal and baby-care classes", detail: "Popular classes fill fast. Most people take them between weeks 28 and 36.", owner: "partner", category: "birth", minutes: 20 },
       { key: "w17-pelvic-floor", title: "Start daily pelvic floor exercises", detail: "A few minutes a day helps before and after birth. Ask about a pelvic-floor physio if you have pain or leaks.", owner: "mom", category: "health", minutes: 5 },
-      { key: "w17-advice-boundary", title: "Set a kind boundary on unsolicited advice", detail: "Save the script for the next time the tips and horror stories start.", owner: "mom", category: "boundaries", minutes: 2, action: { type: "script", scriptId: "unsolicited-advice", label: "Save the script" } },
+      { key: "w17-advice-boundary", quickWin: true, title: "Set a kind boundary on unsolicited advice", detail: "Save the script for the next time the tips and horror stories start.", owner: "mom", category: "boundaries", minutes: 2, action: { type: "script", scriptId: "unsolicited-advice", label: "Save the script" } },
     ],
   },
   {
@@ -237,7 +239,7 @@ export const ROADMAP: RoadmapStage[] = [
       { key: "w20-partner-leave", title: "Partner requests parental leave", detail: "Tell your employer and agree dates now, so leave isn't a last-minute scramble.", owner: "partner", category: "admin", minutes: 15, essential: true, action: { type: "script", scriptId: "partner-tell-work", label: "Use the script" } },
       { key: "w20-hand-me-downs", title: "Ask for hand-me-downs before buying", detail: "Friends with older babies often have bouncers, carriers and clothes waiting for a new home.", why: "This alone can save a large share of your gear budget.", owner: "partner", category: "money", minutes: 5, action: { type: "script", scriptId: "hand-me-downs", label: "Send on WhatsApp" } },
       { key: "w20-big-purchases", title: "Price the big-ticket items", detail: "Stroller, car seat, crib. Add them to the budget as Essential / Nice / Skip and choose new vs. second-hand.", owner: "partner", category: "money", minutes: 45, action: { type: "link", href: "/budget", label: "Open budget" } },
-      { key: "w20-nursery-plan", title: "Plan the baby's sleep space", detail: "A firm, flat crib or bassinet with a fitted sheet only. Many parents keep baby in their room for the first months.", owner: "together", category: "baby-prep", minutes: 20 },
+      { key: "w20-nursery-plan", quickWin: true, title: "Plan the baby's sleep space", detail: "A firm, flat crib or bassinet with a fitted sheet only. Many parents keep baby in their room for the first months.", owner: "together", category: "baby-prep", minutes: 20 },
     ],
   },
   {
@@ -254,7 +256,7 @@ export const ROADMAP: RoadmapStage[] = [
       { key: "w23-pediatrician", title: "Choose a pediatrician or family doctor for the baby", detail: "Check they accept your insurance and are taking new patients. Many offer a free meet-and-greet.", owner: "partner", category: "baby-prep", minutes: 45, essential: true },
       { key: "w23-glucose-book", title: "Book the glucose screening (usually 24–28 weeks)", detail: "It checks for gestational diabetes. Ask if you need to fast beforehand.", owner: "partner", category: "medical", minutes: 10, essential: true, action: { type: "link", href: "/appointments", label: "Add the appointment" } },
       { key: "w23-movements", title: "Get to know your baby's movement pattern", detail: "Notice when baby is usually active. Any reduction later on should be checked the same day.", owner: "mom", category: "health", minutes: 5 },
-      { key: "w23-gift-guide", title: "Guide gifts toward what you actually need", detail: "Share your registry and suggest meals or practical help instead of more stuff.", owner: "mom", category: "money", minutes: 5, action: { type: "script", scriptId: "gift-preferences", label: "Use the script" } },
+      { key: "w23-gift-guide", quickWin: true, title: "Guide gifts toward what you actually need", detail: "Share your registry and suggest meals or practical help instead of more stuff.", owner: "mom", category: "money", minutes: 5, action: { type: "script", scriptId: "gift-preferences", label: "Use the script" } },
     ],
   },
   {
@@ -325,7 +327,7 @@ export const ROADMAP: RoadmapStage[] = [
     partnerFocus: "You're the gatekeeper: send the visitor messages so she never has to be the 'bad guy'.",
     tasks: [
       { key: "w34-pack-bag", title: "Pack the hospital bags", detail: "Use the checklist for mom, baby and partner bags. Have them by the door by week 36.", owner: "together", category: "birth", minutes: 60, essential: true, action: { type: "link", href: "/hospital-bag", label: "Open bag checklist" } },
-      { key: "w34-share-plan", title: "Finalize and share your birth preferences", detail: "Go through them with your provider and give a copy to your birth partner.", owner: "mom", category: "birth", minutes: 20, action: { type: "link", href: "/appointments/print", label: "Print with visit summary" } },
+      { key: "w34-share-plan", quickWin: true, title: "Finalize and share your birth preferences", detail: "Go through them with your provider and give a copy to your birth partner.", owner: "mom", category: "birth", minutes: 20, action: { type: "link", href: "/appointments/print", label: "Print with visit summary" } },
       { key: "w34-route", title: "Plan the route to the hospital and a backup", detail: "Time the drive at different hours. Know where to park and which entrance to use at night.", owner: "partner", category: "birth", minutes: 30 },
       { key: "w34-labor-signs", title: "Learn the signs of labor", detail: "Know how true contractions differ from practice ones, what waters breaking looks like, and when your provider wants you to call.", owner: "together", category: "birth", minutes: 30, essential: true },
       { key: "w34-no-visitors", title: "Tell family your hospital visitor plan", detail: "Send it now, before anyone makes travel plans.", owner: "partner", category: "boundaries", minutes: 5, essential: true, action: { type: "script", scriptId: "no-hospital-visitors", label: "Send on WhatsApp" } },
@@ -347,7 +349,7 @@ export const ROADMAP: RoadmapStage[] = [
       { key: "w36-work-handover", title: "Finish both work handovers", detail: "Write the handover doc, set out-of-office messages, and confirm your last days.", owner: "together", category: "admin", minutes: 60 },
       { key: "w36-postpartum-supplies", title: "Set up a postpartum care station", detail: "Maternity pads, peri bottle, comfy underwear, nipple cream, snacks and a water bottle by the bed.", owner: "partner", category: "wellbeing", minutes: 30 },
       { key: "w36-contacts", title: "Save key numbers in both phones", detail: "Labor ward, provider, pediatrician, lactation support, backup driver.", owner: "partner", category: "birth", minutes: 10 },
-      { key: "w36-review-split", title: "Review your 'who does what' plan", detail: "Revisit what you agreed at week 26 and adjust for what you know now.", owner: "together", category: "wellbeing", minutes: 20 },
+      { key: "w36-review-split", quickWin: true, title: "Review your 'who does what' plan", detail: "Revisit what you agreed at week 26 and adjust for what you know now.", owner: "together", category: "wellbeing", minutes: 20 },
     ],
   },
   {

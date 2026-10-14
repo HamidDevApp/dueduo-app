@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, CalendarHeart, Gift, HeartHandshake, Luggage, Map as MapIcon, NotebookPen, Wallet } from "lucide-react";
+import { CalendarHeart, Gift, Luggage, Map as MapIcon, NotebookPen, Wallet } from "lucide-react";
+import { FirstStepsCard } from "@/components/dashboard/first-steps-card";
 import { PregnancyHero } from "@/components/dashboard/pregnancy-hero";
 import { SummaryCard } from "@/components/dashboard/summary-card";
-import { Card } from "@/components/ui/card";
+import { pickQuickTask } from "@/lib/first-steps";
 import { estimateLeavePlan } from "@/lib/money";
 import { getPregnancyStatus } from "@/lib/pregnancy";
 import {
@@ -27,7 +27,7 @@ export default async function DashboardPage() {
   const nowIso = new Date().toISOString();
 
   // Always scope to the space owner: partners may also have access to their own (empty) space.
-  const [nextApptRes, questionsRes, budgetRes, bagRes, registryRes, statesRes, membersRes] =
+  const [nextApptRes, questionsRes, budgetRes, bagRes, registryRes, statesRes, membersRes, customDoneRes] =
     await Promise.all([
       supabase
         .from("appointments")
@@ -48,6 +48,11 @@ export default async function DashboardPage() {
       supabase.from("registry_items").select("status").eq("user_id", ownerId),
       supabase.from("roadmap_progress").select("task_key, assignee, completed_at").eq("user_id", ownerId),
       supabase.from("pregnancy_members").select("member_id").eq("owner_id", ownerId),
+      supabase
+        .from("custom_tasks")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", ownerId)
+        .not("completed_at", "is", null),
     ]);
 
   const status = profile?.due_date ? getPregnancyStatus(profile.due_date) : null;
@@ -90,29 +95,20 @@ export default async function DashboardPage() {
   const covered = registry.filter((r) => r.status !== "wanted").length;
 
   const hasPartner = (membersRes.data ?? []).length > 0;
+  // First steps: anything ticked in the space (roadmap or custom task, by either of you) counts.
+  const anyTicked = [...states.values()].some((s) => s.completed_at) || (customDoneRes.count ?? 0) > 0;
 
   return (
     <div className="space-y-6">
       <PregnancyHero status={status} />
 
-      {role === "owner" && !hasPartner && (
-        <Card className="flex flex-col gap-4 bg-brand-soft/60 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-3">
-            <HeartHandshake className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden />
-            <div>
-              <p className="font-semibold">You don&apos;t have to remember everything.</p>
-              <p className="text-sm text-muted">
-                Invite {profile?.partner_name || "your partner"} as Co-Pilot — they get their own task list.
-              </p>
-            </div>
-          </div>
-          <Link
-            href="/co-pilot"
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand-strong px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-deep"
-          >
-            Invite now <ArrowRight className="size-4" aria-hidden />
-          </Link>
-        </Card>
+      {role === "owner" && status && (
+        <FirstStepsCard
+          partnerName={profile?.partner_name ?? null}
+          partnerJoined={hasPartner}
+          firstTaskDone={anyTicked}
+          suggestedTask={anyTicked ? null : pickQuickTask(status.week, states)}
+        />
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

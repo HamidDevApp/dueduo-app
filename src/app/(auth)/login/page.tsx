@@ -4,6 +4,7 @@ import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Baby, Mail } from "lucide-react";
 import Link from "next/link";
+import { Turnstile } from "@/components/auth/turnstile";
 import { createClient } from "@/lib/supabase/client";
 import { track } from "@/lib/track";
 import { SITE } from "@/lib/site-config";
@@ -15,19 +16,24 @@ function LoginForm() {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">(
     params.get("error") ? "error" : "idle",
   );
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!captchaToken) return;
     setState("sending");
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
+        captchaToken,
         emailRedirectTo: `${process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ? SITE.url : window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
     setState(error ? "error" : "sent");
     if (!error) track("Lead");
+    else setCaptchaReset((n) => n + 1); // tokens are single-use
   }
 
   if (state === "sent") {
@@ -65,6 +71,8 @@ function LoginForm() {
         />
       </label>
 
+      <Turnstile onToken={setCaptchaToken} resetKey={captchaReset} />
+
       {state === "error" && (
         <p className="text-sm text-brand-strong" role="alert">
           Something went wrong. Please try again.
@@ -73,10 +81,10 @@ function LoginForm() {
 
       <button
         type="submit"
-        disabled={state === "sending"}
+        disabled={state === "sending" || !captchaToken}
         className="w-full rounded-xl bg-brand-strong px-4 py-3 font-semibold text-white hover:bg-brand-deep disabled:opacity-60"
       >
-        {state === "sending" ? "Sending…" : "Send magic link"}
+        {state === "sending" ? "Sending…" : captchaToken ? "Send magic link" : "Checking you're human…"}
       </button>
 
       <p className="text-center text-xs text-muted">

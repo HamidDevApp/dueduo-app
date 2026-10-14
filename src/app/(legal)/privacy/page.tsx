@@ -58,6 +58,7 @@ export default function PrivacyPage() {
             as an independent controller under its own privacy policy.
           </li>
           <li><strong>Our email provider</strong> — sending sign-in links and service emails.</li>
+          <li><strong>Cloudflare Turnstile</strong> — a bot check on the sign-in form that blocks automated sign-ups.</li>
           <li>
             <strong>Meta and TikTok</strong> — only if you accept advertising cookies. If you buy, we tell them a purchase
             happened (with your email in hashed, unreadable form) so we can measure our ads. No pregnancy or health details

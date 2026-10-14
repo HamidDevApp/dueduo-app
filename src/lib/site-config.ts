@@ -27,4 +27,6 @@ export const SITE = {
   /** Tags every Polar checkout so other products on the same Polar organization are ignored by this app.
    *  Keep this value unchanged after launch — existing payments are matched on it. */
   productKey: "first-pregnancy-planner",
+  /** Cloudflare Turnstile site key (public) for the login bot check. The secret key lives in Supabase only. */
+  turnstileSiteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "0x4AAAAAAFWnZkrbC0JnkNH-",
 } as const;

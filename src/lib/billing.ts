@@ -1,6 +1,7 @@
 import "server-only";
 import { sendServerPurchase } from "@/lib/capi";
 import { UUID_RE } from "@/lib/form";
+import { parseGuideSource } from "@/lib/guides";
 import { sendOnboardingEmail } from "@/lib/onboarding-send";
 import { polarApi, type PolarCheckout, type PolarOrder } from "@/lib/polar";
 import { configuredOrigin } from "@/lib/site";
@@ -65,6 +66,17 @@ async function grantAccess(p: PaidPurchase): Promise<void> {
 
   const { error } = await admin.from("profiles").update({ has_access: true }).eq("id", p.userId);
   if (error) throw error;
+
+  // Which free guide the sale came from (payments.source, migration 0006). Optional: never block access on it.
+  const source = parseGuideSource(p.metadata.source);
+  if (source) {
+    const { error: sourceError } = await admin
+      .from("payments")
+      .update({ source })
+      .eq("stripe_session_id", p.checkoutId)
+      .is("source", null);
+    if (sourceError) console.error("[billing] could not save guide source", { checkoutId: p.checkoutId, source }, sourceError);
+  }
 
   // Ad reporting: once per purchase, only if the buyer accepted marketing cookies, never for free (100% discount) orders.
   const m = p.metadata;

@@ -46,9 +46,12 @@ export async function updateSession(request: NextRequest) {
 
   if (user && pathname === "/login") {
     const next = request.nextUrl.searchParams.get("next");
+    const safe = next && next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
+    // `next` may carry a query (e.g. /checkout?from=<guide>), so resolve it as a URL rather than a bare path.
+    const target = new URL(safe, request.nextUrl.origin);
     const url = request.nextUrl.clone();
-    url.pathname = next && next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
-    url.search = "";
+    url.pathname = target.pathname;
+    url.search = target.search;
     return NextResponse.redirect(url);
   }
 

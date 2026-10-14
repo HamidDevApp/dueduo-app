@@ -3,12 +3,13 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { CONSENT_COOKIE } from "@/lib/consent";
+import { parseGuideSource } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 import { siteOrigin } from "@/lib/site";
 import { getSpace } from "@/lib/space";
 import { PolarApiError, polarApi, type PolarCheckout } from "@/lib/polar";
 
-export async function startCheckout() {
+export async function startCheckout(formData: FormData) {
   const { user, role, profile } = await getSpace();
   if (role !== "owner") redirect("/dashboard");
   if (profile?.has_access) redirect(profile.due_date ? "/dashboard" : "/onboarding");
@@ -17,13 +18,15 @@ export async function startCheckout() {
   if (!productId) throw new Error("POLAR_PRODUCT_ID is not set");
 
   const origin = await siteOrigin();
-  // Copied by Polar onto the order, so the webhook knows who paid and can send the ad Purchase event.
-  const required = { product: SITE.productKey, user_id: user.id };
+  // Which free guide the purchase started from (fixed list only; never blank — Polar rejects empty metadata values).
+  const source = parseGuideSource(formData.get("from"));
+  // Copied by Polar onto the order, so the webhook knows who paid, which guide it came from, and can send the ad Purchase event.
+  const required = { product: SITE.productKey, user_id: user.id, ...(source ? { source } : {}) };
   const base = {
     products: [productId],
     allow_discount_codes: true,
     success_url: `${origin}/checkout/success?checkout_id={CHECKOUT_ID}`,
-    return_url: `${origin}/checkout?canceled=1`,
+    return_url: `${origin}/checkout?canceled=1${source ? `&from=${source}` : ""}`,
   };
 
   let checkout: PolarCheckout;

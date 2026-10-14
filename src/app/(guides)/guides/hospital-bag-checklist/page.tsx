@@ -104,7 +104,7 @@ export default function HospitalBagChecklistPage() {
           <GuidePrintButton>Print this checklist</GuidePrintButton>
         </div>
 
-        <GuideCta>
+        <GuideCta guide={guide}>
           In DueDuo, these bags live on both your phones. Each of you sees your own bag, you tick items off as you pack,
           and you can add your own. It&apos;s one part of a week-by-week plan for both of you.
         </GuideCta>

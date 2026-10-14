@@ -70,7 +70,7 @@ export default function PrenatalQuestionsPage() {
           <GuidePrintButton>Print these questions</GuidePrintButton>
         </div>
 
-        <GuideCta>
+        <GuideCta guide={guide}>
           In DueDuo, you both add questions as they come up between visits. Before each appointment, you print them on one
           page with a 28-day symptom log and the appointment details.
         </GuideCta>

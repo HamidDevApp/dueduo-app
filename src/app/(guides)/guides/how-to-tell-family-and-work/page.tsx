@@ -86,7 +86,7 @@ export default function TellFamilyAndWorkPage() {
         />
       </MonthProvider>
 
-      <GuideCta>
+      <GuideCta guide={guide}>
         DueDuo has all 12 messages, each with an Open in WhatsApp button, next to your week-by-week plan, so the one you
         need is there when the moment comes.
       </GuideCta>

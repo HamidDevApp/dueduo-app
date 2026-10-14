@@ -10,6 +10,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
+      updated="2026-10-14"
       intro={`Your pregnancy is personal. This policy explains what ${SITE.name} collects, why, who helps us process it, and the choices you have. We never sell your data.`}
     >
       <LegalSection title="1. Who is responsible">
@@ -33,6 +34,10 @@ export default function PrivacyPage() {
             <strong>Payment:</strong> Polar sells {SITE.name} to you as our merchant of record and processes your payment.
             We receive the amount, currency, status and your email — never your card number.
           </li>
+          <li>
+            <strong>Which guide you came from:</strong> if you go to checkout from one of our free guides, we record which
+            guide it was with your order, to learn which guides are useful. No cookies are used for this.
+          </li>
           <li><strong>Technical:</strong> basic logs (such as IP address and browser) needed to run and secure the service.</li>
           <li><strong>Advertising cookies:</strong> only if you accept them (see section 7).</li>
         </ul>
@@ -42,6 +47,12 @@ export default function PrivacyPage() {
         <ul>
           <li><strong>To provide the service you bought</strong> — performance of our contract with you.</li>
           <li><strong>To store your pregnancy and health information</strong> — your explicit consent, given during setup.</li>
+          <li>
+            <strong>To help you get started after you buy</strong> — a welcome email, then up to four tips emails over the
+            first 10 days (on days 1, 3, 7 and 10; the one about inviting your partner only if your partner hasn&apos;t joined
+            yet). Every tips email has an unsubscribe link. Our legitimate interests in helping you use what you bought.
+          </li>
+          <li><strong>To learn which free guides are useful</strong> — our legitimate interests.</li>
           <li><strong>To measure our advertising</strong> — your consent via the cookie banner.</li>
           <li><strong>To keep the service secure and prevent fraud</strong> — our legitimate interests.</li>
           <li><strong>To keep payment and accounting records</strong> — legal obligations.</li>

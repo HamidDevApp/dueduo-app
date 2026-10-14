@@ -49,7 +49,7 @@ export default function ParentalLeaveCalculatorPage() {
         check what you&apos;re entitled to with your employer or government.
       </p>
 
-      <GuideCta>
+      <GuideCta guide={guide}>
         In DueDuo, the leave gap sits next to the rest of the baby budget: what you&apos;ll buy, what you can skip or
         borrow, and when to buy it, with the monthly target updating as your due date gets closer.
       </GuideCta>

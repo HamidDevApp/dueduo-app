@@ -81,6 +81,21 @@ export const GUIDES = {
 
 export const GUIDE_LIST: Guide[] = Object.values(GUIDES);
 
+/**
+ * Which guide a purchase started from: the last part of the guide's address, e.g. "hospital-bag-checklist".
+ * Carried in the "Start our plan" link → checkout → Polar metadata → payments.source. No cookies.
+ */
+export const guideSource = (g: Guide) => g.path.split("/").pop()!;
+const GUIDE_SOURCES = new Set(GUIDE_LIST.map(guideSource));
+
+/** Only our own guide names are accepted (anything else is dropped). */
+export function parseGuideSource(value: unknown): string | null {
+  return typeof value === "string" && GUIDE_SOURCES.has(value) ? value : null;
+}
+
+/** Sign-up link that lands on checkout with the guide's name attached. */
+export const guideCheckoutPath = (g: Guide) => `/login?next=${encodeURIComponent(`/checkout?from=${guideSource(g)}`)}`;
+
 export type Source = { n: number; title: string; url: string };
 
 export const SOURCES = {

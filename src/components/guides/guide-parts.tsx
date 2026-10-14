@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Check, ChevronRight } from "lucide-react";
-import { CHECKOUT_PATH } from "@/components/landing/cta-link";
 import type { Guide, Source } from "@/lib/guides";
-import { guideJsonLd } from "@/lib/guides";
+import { guideCheckoutPath, guideJsonLd } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 
 /** Breadcrumb, H1 and structured data shared by every guide/tool page. */
@@ -65,7 +64,7 @@ export function Sources({ sources }: { sources: Source[] }) {
 }
 
 /** "DueDuo box" text (per page) + the shared approved CTA. Hidden when printing. */
-export function GuideCta({ children }: { children: React.ReactNode }) {
+export function GuideCta({ guide, children }: { guide: Guide; children: React.ReactNode }) {
   const smallPrint = [
     "One-time payment",
     "No subscription",
@@ -81,7 +80,7 @@ export function GuideCta({ children }: { children: React.ReactNode }) {
         and a baby budget.
       </p>
       <Link
-        href={CHECKOUT_PATH}
+        href={guideCheckoutPath(guide)}
         className="mt-6 inline-flex items-center justify-center rounded-full bg-brand-strong px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-strong/20 hover:bg-brand-deep"
       >
         Start our plan — {SITE.price}

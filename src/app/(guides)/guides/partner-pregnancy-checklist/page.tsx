@@ -160,7 +160,7 @@ export default function PartnerChecklistPage() {
         <GuidePrintButton>Print the partner&apos;s list</GuidePrintButton>
       </div>
 
-      <GuideCta>
+      <GuideCta guide={guide}>
         In DueDuo, the partner gets their own login and their own task list, week by week. You both see what&apos;s
         done, so nobody has to ask. The partner joins free.
       </GuideCta>

@@ -121,7 +121,7 @@ export default function SkipListPage() {
         <GuidePrintButton>Print the starter list</GuidePrintButton>
       </div>
 
-      <GuideCta>
+      <GuideCta guide={guide}>
         DueDuo&apos;s shared baby budget sorts every item into Essential, Nice to have or Skip, with where you&apos;ll get
         it (new, second-hand or borrowed) and the week to buy it by. You both see the same list, and anything you skip
         shows as money you kept.

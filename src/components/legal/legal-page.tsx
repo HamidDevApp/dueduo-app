@@ -1,12 +1,23 @@
 import { SITE } from "@/lib/site-config";
 import { formatLongDate } from "@/lib/utils";
 
-export function LegalPage({ title, intro, children }: { title: string; intro?: string; children: React.ReactNode }) {
+export function LegalPage({
+  title,
+  intro,
+  updated = SITE.legal.lastUpdated,
+  children,
+}: {
+  title: string;
+  intro?: string;
+  /** "YYYY-MM-DD" — defaults to SITE.legal.lastUpdated. */
+  updated?: string;
+  children: React.ReactNode;
+}) {
   return (
     <article className="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
       <p className="text-xs font-semibold tracking-[0.18em] text-brand-strong uppercase">Legal</p>
       <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
-      <p className="mt-3 text-sm text-muted">Last updated: {formatLongDate(SITE.legal.lastUpdated)}</p>
+      <p className="mt-3 text-sm text-muted">Last updated: {formatLongDate(updated)}</p>
       {intro && <p className="mt-8 text-lg leading-relaxed text-ink/80">{intro}</p>}
       <div className="mt-10 space-y-10">{children}</div>
     </article>

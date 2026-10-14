@@ -28,10 +28,44 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+// Structured data for search engines. Planning tool only: no ratings, reviews or medical claims.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE.url}/#organization`,
+      name: SITE.name,
+      url: SITE.url,
+      logo: `${SITE.url}/brand/dueduo-icon-512.png`,
+      sameAs: ["https://www.facebook.com/dueduoo", "https://www.instagram.com/dueduoo/"],
+    },
+    {
+      "@type": "WebApplication",
+      name: SITE.name,
+      url: SITE.url,
+      description:
+        "A week-by-week pregnancy planner for first-time parents and their partner: roadmap, appointments, doctor questions, budget, registry and hospital bag.",
+      applicationCategory: "LifestyleApplication",
+      operatingSystem: "Web",
+      publisher: { "@id": `${SITE.url}/#organization` },
+      offers: {
+        "@type": "Offer",
+        price: SITE.priceValue,
+        priceCurrency: SITE.currency,
+      },
+    },
+  ],
+};
+
 // Fully static: instant loads from ads, great for SEO.
 export default function LandingPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <SiteHeader />
       <main>
         <Hero />

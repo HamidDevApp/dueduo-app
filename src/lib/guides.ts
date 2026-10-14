@@ -44,6 +44,39 @@ export const GUIDES = {
     kind: "Tool",
     published: "2026-10-14",
   },
+  partnerChecklist: {
+    path: "/guides/partner-pregnancy-checklist",
+    title: "The Partner's Pregnancy To-Do List, Week by Week",
+    description:
+      "27 jobs for the partner, from booking the first appointment to installing the car seat, sorted by week, plus the jobs you do together. Printable.",
+    h1: "The partner's pregnancy to-do list",
+    blurb:
+      "27 jobs for the partner, from booking the first appointment to installing the car seat, sorted by week, plus the jobs you do together. Printable.",
+    kind: "Guide",
+    published: "2026-10-14",
+  },
+  skipList: {
+    path: "/guides/baby-items-you-dont-need",
+    title: "Baby Things You Don't Need: 10 to Skip",
+    description:
+      "10 baby items you can skip or put off, two that are unsafe for sleep, and what's worth buying second-hand. A calmer, cheaper first baby list.",
+    h1: "Baby things you can skip",
+    blurb:
+      "10 baby items you can skip or put off, two that are unsafe for sleep, and what's worth buying second-hand. A calmer, cheaper first baby list.",
+    kind: "Guide",
+    published: "2026-10-14",
+  },
+  messages: {
+    path: "/guides/how-to-tell-family-and-work",
+    title: "How to Tell Family and Work You're Expecting",
+    description:
+      "Ready-to-copy messages for telling family, your manager and your partner's work, plus messages for privacy, labor updates and visitors.",
+    h1: "How to tell family and work: messages you can copy",
+    blurb:
+      "Ready-to-copy messages for telling family, your manager and your partner's work, plus messages for privacy, labor updates and visitors.",
+    kind: "Guide",
+    published: "2026-10-14",
+  },
 } satisfies Record<string, Guide>;
 
 export const GUIDE_LIST: Guide[] = Object.values(GUIDES);
@@ -70,6 +103,31 @@ export const SOURCES = {
     n: 4,
     title: "NHS: Your antenatal appointments",
     url: "https://www.nhs.uk/pregnancy/your-pregnancy-care/your-antenatal-appointments/",
+  },
+  aapSafeSleep: {
+    n: 5,
+    title: "American Academy of Pediatrics (HealthyChildren.org), a parent's guide to safe sleep",
+    url: "https://www.healthychildren.org/English/ages-stages/baby/sleep/Pages/a-parents-guide-to-safe-sleep.aspx",
+  },
+  cpscBans: {
+    n: 6,
+    title: "US Consumer Product Safety Commission, bans on inclined sleepers and crib bumpers",
+    url: "https://cpsc.gov/Newsroom/News-Releases/2023/CPSC-Approves-Rules-Implementing-Bans-on-Inclined-Sleepers-for-Infants-and-Crib-Bumpers",
+  },
+  consumerReportsCarSeats: {
+    n: 7,
+    title: "Consumer Reports, are second-hand car seats safe",
+    url: "https://www.consumerreports.org/car-seats/are-secondhand-car-seats-safe",
+  },
+  govMaternity: {
+    n: 8,
+    title: "GOV.UK, Maternity Leave: how to claim",
+    url: "https://www.gov.uk/maternity-leave/how-to-claim",
+  },
+  govPaternity: {
+    n: 9,
+    title: "GOV.UK, Paternity Leave: how to claim",
+    url: "https://www.gov.uk/paternity-pay-leave/how-to-claim",
   },
 } satisfies Record<string, Source>;
 

@@ -7,7 +7,7 @@ import { SITE } from "@/lib/site-config";
 export const metadata: Metadata = {
   title: { absolute: `Free guides and tools for planning for two | ${SITE.name}` },
   description:
-    "Free, printable guides and tools for first-time parents: a hospital bag checklist, prenatal appointment questions and a parental leave calculator.",
+    "Free, printable guides and tools for first-time parents: hospital bag checklist, appointment questions, a parental leave calculator, the partner's to-do list and more.",
   alternates: { canonical: "/guides" },
 };
 

@@ -44,11 +44,10 @@ const BAGS: ChecklistGroup[] = [
     id: "baby",
     title: "The baby's bag",
     items: [
-      {
-        text: "Car seat, rear-facing and installed in the car before the due date. Hospital staff usually can't install it for you.",
-        linkText: "Hospital staff usually can't install it for you.",
-        href: SOURCES.kaiser.url,
-      },
+      [
+        "Car seat, rear-facing and installed in the car before the due date. ",
+        { text: "Hospital staff usually can't install it for you.", href: SOURCES.kaiser.url },
+      ],
       "2 or 3 bodysuits and sleepsuits",
       "Hat, socks and mittens",
       "Swaddle or receiving blanket",
@@ -101,7 +100,7 @@ export default function HospitalBagChecklistPage() {
         <Prose className="mt-8 print:mt-4 print:text-[10.5pt]">
           <p>Your hospital or birth center may have its own list. Ask at your next appointment.</p>
         </Prose>
-        <div className="mt-6">
+        <div className="mt-6 print:hidden">
           <GuidePrintButton>Print this checklist</GuidePrintButton>
         </div>
 

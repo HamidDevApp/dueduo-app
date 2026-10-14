@@ -4,34 +4,55 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** A plain item, or one whose `linkText` part links to a source. */
-export type ChecklistItem = string | { text: string; linkText: string; href: string };
+/** Text with optional links: external links open in a new tab. */
+export type Segment = string | { text: string; href: string };
+/** A plain item, or a list of segments (some of them links). */
+export type ChecklistItem = string | Segment[];
 export type ChecklistGroup = { id: string; title: string; items: ChecklistItem[] };
 
-const itemText = (i: ChecklistItem) => (typeof i === "string" ? i : i.text);
+const segText = (s: Segment) => (typeof s === "string" ? s : s.text);
+const itemText = (i: ChecklistItem) => (typeof i === "string" ? i : i.map(segText).join(""));
 
-function ItemLabel({ item }: { item: ChecklistItem }) {
-  if (typeof item === "string") return <>{item}</>;
-  const [before, after] = item.text.split(item.linkText);
+export function Segments({ parts }: { parts: Segment[] }) {
   return (
     <>
-      {before}
-      <a
-        href={item.href}
-        target="_blank"
-        rel="noopener"
-        onClick={(e) => e.stopPropagation()}
-        className="font-semibold text-brand-strong underline underline-offset-2 print:font-normal print:text-ink print:no-underline"
-      >
-        {item.linkText}
-      </a>
-      {after}
+      {parts.map((p, n) =>
+        typeof p === "string" ? (
+          p
+        ) : (
+          <a
+            key={n}
+            href={p.href}
+            {...(p.href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
+            onClick={(e) => e.stopPropagation()}
+            className="font-semibold text-brand-strong underline underline-offset-2 print:font-normal print:text-ink print:no-underline"
+          >
+            {p.text}
+          </a>
+        ),
+      )}
     </>
   );
 }
 
+const LAYOUTS = {
+  /** Up to 3 cards side by side (hospital bags). */
+  columns: "grid gap-5 lg:grid-cols-3 print:grid-cols-3 print:gap-5",
+  /** Many small groups (stages): 2 columns on wider screens, flowing 2 columns on paper. */
+  stages: "grid gap-4 md:grid-cols-2 print:block print:columns-2 print:gap-6",
+};
+
 /** Tick-off checklists: clickable on screen, nothing is saved; prints as empty boxes. */
-export function Checklist({ groups }: { groups: ChecklistGroup[] }) {
+export function Checklist({
+  groups,
+  layout = "columns",
+  headingLevel = 2,
+}: {
+  groups: ChecklistGroup[];
+  layout?: keyof typeof LAYOUTS;
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   const [done, setDone] = useState<Set<string>>(new Set());
   const toggle = (key: string) =>
     setDone((prev) => {
@@ -42,19 +63,35 @@ export function Checklist({ groups }: { groups: ChecklistGroup[] }) {
     });
 
   return (
-    <div className="grid gap-5 lg:grid-cols-3 print:grid-cols-3 print:gap-5">
+    <div className={LAYOUTS[layout]}>
       {groups.map((g) => (
         <section
           key={g.id}
-          className="break-inside-avoid rounded-[var(--radius-card)] border border-line bg-surface p-6 print:rounded-none print:border-0 print:bg-transparent print:p-0"
+          className={cn(
+            "break-inside-avoid rounded-[var(--radius-card)] border border-line bg-surface p-6 print:rounded-none print:border-0 print:bg-transparent print:p-0",
+            layout === "stages" && "p-5 print:mb-3",
+          )}
         >
-          <h2 className="font-display text-xl font-semibold print:text-base">{g.title}</h2>
-          <ul className="mt-4 space-y-3 print:mt-2 print:space-y-1.5">
+          <Heading
+            className={cn(
+              "font-display font-semibold",
+              layout === "stages" ? "text-lg print:text-[10.5pt]" : "text-xl print:text-base",
+            )}
+          >
+            {g.title}
+          </Heading>
+          <ul className={cn("mt-4 space-y-3 print:mt-2 print:space-y-1.5", layout === "stages" && "mt-3 print:mt-1 print:space-y-1")}>
             {g.items.map((item) => {
               const key = `${g.id}:${itemText(item)}`;
               const checked = done.has(key);
               return (
-                <li key={key} className="flex items-start gap-3 leading-snug print:gap-2 print:text-[10.5pt]">
+                <li
+                  key={key}
+                  className={cn(
+                    "flex items-start gap-3 leading-snug print:gap-2",
+                    layout === "stages" ? "print:text-[9.5pt]" : "print:text-[10.5pt]",
+                  )}
+                >
                   <button
                     type="button"
                     role="checkbox"
@@ -73,7 +110,7 @@ export function Checklist({ groups }: { groups: ChecklistGroup[] }) {
                     onClick={() => toggle(key)}
                     className={cn("cursor-pointer", checked && "text-muted line-through print:text-ink print:no-underline")}
                   >
-                    <ItemLabel item={item} />
+                    {typeof item === "string" ? item : <Segments parts={item} />}
                   </span>
                 </li>
               );

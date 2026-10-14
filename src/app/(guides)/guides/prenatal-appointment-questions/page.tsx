@@ -66,7 +66,7 @@ export default function PrenatalQuestionsPage() {
             <SourceLink source={SOURCES.nhs}>NHS</SourceLink>).
           </p>
         </Prose>
-        <div className="mt-6">
+        <div className="mt-6 print:hidden">
           <GuidePrintButton>Print these questions</GuidePrintButton>
         </div>
 

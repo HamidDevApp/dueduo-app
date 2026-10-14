@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { CookieSettingsButton } from "@/components/consent/consent-banner";
+import { GUIDE_LIST } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 import { CtaLink } from "./cta-link";
 import { ProductPreview } from "./product-preview";
@@ -518,6 +519,12 @@ export function SiteFooter() {
             <Logo />
             <p className="mt-4 text-sm text-muted">{SITE.tagline}.</p>
           </div>
+          <nav aria-label="Free guides" className="flex flex-col gap-3 text-sm">
+            <Link href="/guides" className="font-semibold text-ink hover:text-brand-strong">Free guides</Link>
+            {GUIDE_LIST.map((g) => (
+              <Link key={g.path} href={g.path} className="text-muted hover:text-ink">{g.h1}</Link>
+            ))}
+          </nav>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm">
             <Link href="/#co-pilot" className="text-muted hover:text-ink">Co-Pilot</Link>
             <Link href="/#features" className="text-muted hover:text-ink">Features</Link>

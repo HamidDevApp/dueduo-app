@@ -51,7 +51,7 @@ export async function sendOnboardingEmail(userId: string, key: EmailKey): Promis
 
 export type CronSummary = { checked: number; sent: { userId: string; key: EmailKey }[]; failed: number };
 
-/** Daily run: sends at most ONE due email (2–5) per buyer. */
+/** Daily run: sends at most ONE due email (2–5) per buyer who already got the welcome email. */
 export async function runOnboardingEmails(now = new Date()): Promise<CronSummary> {
   const admin = createAdminClient();
   const since = new Date(now.getTime() - LOOKBACK_DAYS * DAY_MS).toISOString();
@@ -89,6 +89,8 @@ export async function runOnboardingEmails(now = new Date()): Promise<CronSummary
   for (const userId of userIds) {
     const profile = profiles.get(userId);
     if (!profile?.has_access || profile.marketing_emails_opt_out || refunded.has(userId)) continue;
+    // Only buyers who got the welcome email: anyone who bought before these emails went live is skipped.
+    if (!sentKeys.has(`${userId}:welcome`)) continue;
 
     const days = Math.floor((now.getTime() - paidAt.get(userId)!.getTime()) / DAY_MS);
     const due = SCHEDULE.find(

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Check, ChevronRight } from "lucide-react";
 import type { Guide, Source } from "@/lib/guides";
-import { guideCheckoutPath, guideJsonLd } from "@/lib/guides";
+import { CheckoutLink } from "@/components/checkout-link";
+import { guideJsonLd, guideSource } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 
 /** Breadcrumb, H1 and structured data shared by every guide/tool page. */
@@ -79,12 +80,12 @@ export function GuideCta({ guide, children }: { guide: Guide; children: React.Re
         A week-by-week plan for both of you, with your own task lists, shared checklists, one-page appointment printouts
         and a baby budget.
       </p>
-      <Link
-        href={guideCheckoutPath(guide)}
+      <CheckoutLink
+        from={guideSource(guide)}
         className="mt-6 inline-flex items-center justify-center rounded-full bg-brand-strong px-6 py-3.5 font-semibold text-white shadow-lg shadow-brand-strong/20 hover:bg-brand-deep"
       >
         Start our plan — {SITE.price}
-      </Link>
+      </CheckoutLink>
       <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
         {smallPrint.map((t) => (
           <li key={t} className="flex items-center gap-1">

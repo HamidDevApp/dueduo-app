@@ -1,5 +1,6 @@
 import "server-only";
 import { sendServerPurchase } from "@/lib/capi";
+import { parseUtmLabel } from "@/lib/attribution";
 import { UUID_RE } from "@/lib/form";
 import { parseGuideSource } from "@/lib/guides";
 import { sendOnboardingEmail } from "@/lib/onboarding-send";
@@ -76,6 +77,17 @@ async function grantAccess(p: PaidPurchase): Promise<void> {
       .eq("stripe_session_id", p.checkoutId)
       .is("source", null);
     if (sourceError) console.error("[billing] could not save guide source", { checkoutId: p.checkoutId, source }, sourceError);
+  }
+
+  // Which ad or post the sale came from (payments.utm, migration 0007). Optional, like the guide source.
+  const utm = parseUtmLabel(p.metadata.utm);
+  if (utm) {
+    const { error: utmError } = await admin
+      .from("payments")
+      .update({ utm })
+      .eq("stripe_session_id", p.checkoutId)
+      .is("utm", null);
+    if (utmError) console.error("[billing] could not save utm label", { checkoutId: p.checkoutId, utm }, utmError);
   }
 
   // Ad reporting: once per purchase, only if the buyer accepted marketing cookies, never for free (100% discount) orders.

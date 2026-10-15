@@ -38,6 +38,11 @@ export default function PrivacyPage() {
             <strong>Which guide you came from:</strong> if you go to checkout from one of our free guides, we record which
             guide it was with your order, to learn which guides are useful. No cookies are used for this.
           </li>
+          <li>
+            <strong>Which ad or link you came from:</strong> if you reach our site from one of our ads or social posts and
+            then buy, we record the campaign label in that link (for example, which ad or pin) with your order, to learn
+            which ads and posts work. No cookies are used for this.
+          </li>
           <li><strong>Technical:</strong> basic logs (such as IP address and browser) needed to run and secure the service.</li>
           <li><strong>Advertising cookies:</strong> only if you accept them (see section 7).</li>
         </ul>
@@ -52,7 +57,7 @@ export default function PrivacyPage() {
             first 10 days (on days 1, 2, 3, 7 and 10; the one about inviting your partner only if your partner hasn&apos;t
             joined yet, and the day-2 one only if you haven&apos;t finished setup or ticked off a task yet). Every tips email has an unsubscribe link. Our legitimate interests in helping you use what you bought.
           </li>
-          <li><strong>To learn which free guides are useful</strong> — our legitimate interests.</li>
+          <li><strong>To learn which free guides, ads and posts are useful</strong> — our legitimate interests.</li>
           <li><strong>To measure our advertising</strong> — your consent via the cookie banner.</li>
           <li><strong>To keep the service secure and prevent fraud</strong> — our legitimate interests.</li>
           <li><strong>To keep payment and accounting records</strong> — legal obligations.</li>

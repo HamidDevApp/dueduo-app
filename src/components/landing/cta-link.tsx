@@ -1,9 +1,7 @@
-import Link from "next/link";
+import { CheckoutLink } from "@/components/checkout-link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Primary conversion path: magic-link sign-up → straight to Polar checkout. */
-export const CHECKOUT_PATH = "/login?next=/checkout";
 
 type Variant = "primary" | "dark" | "light";
 
@@ -26,8 +24,7 @@ export function CtaLink({
   size?: "md" | "lg";
 }) {
   return (
-    <Link
-      href={CHECKOUT_PATH}
+    <CheckoutLink
       className={cn(
         "group inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-strong",
         size === "lg" ? "px-7 py-4 text-base" : "px-5 py-2.5 text-sm",
@@ -37,6 +34,6 @@ export function CtaLink({
     >
       {children}
       <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
-    </Link>
+    </CheckoutLink>
   );
 }

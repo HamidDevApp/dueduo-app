@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
-import { CHECKOUT_PATH } from "./cta-link";
+import { CheckoutLink } from "@/components/checkout-link";
 
 const LINKS = [
   { href: "/#co-pilot", label: "Co-Pilot" },
@@ -27,12 +27,9 @@ export function SiteHeader() {
           <Link href="/login" className="rounded-full px-3.5 py-2 text-muted transition-colors hover:text-ink">
             Log in
           </Link>
-          <Link
-            href={CHECKOUT_PATH}
-            className="rounded-full bg-ink px-4 py-2 text-canvas transition-colors hover:bg-ink/90"
-          >
+          <CheckoutLink className="rounded-full bg-ink px-4 py-2 text-canvas transition-colors hover:bg-ink/90">
             Get started
-          </Link>
+          </CheckoutLink>
         </div>
       </div>
     </header>

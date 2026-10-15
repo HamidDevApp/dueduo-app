@@ -4,6 +4,7 @@ import { Check, HeartHandshake, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { PayButton } from "@/components/checkout/pay-button";
 import { TrackEvent } from "@/components/tracking/track-event";
+import { parseUtmLabel } from "@/lib/attribution";
 import { parseGuideSource } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 import { getSpace } from "@/lib/space";
@@ -23,10 +24,11 @@ const INCLUDED = [
 export default async function CheckoutPage({
   searchParams,
 }: {
-  searchParams: Promise<{ canceled?: string; from?: string }>;
+  searchParams: Promise<{ canceled?: string; from?: string; utm?: string }>;
 }) {
-  const { canceled, from } = await searchParams;
+  const { canceled, from, utm: utmParam } = await searchParams;
   const source = parseGuideSource(from);
+  const utm = parseUtmLabel(utmParam);
   const { role, profile } = await getSpace();
 
   if (profile?.has_access) redirect(profile.due_date ? "/dashboard" : "/onboarding");
@@ -80,6 +82,7 @@ export default async function CheckoutPage({
           <TrackEvent event="InitiateCheckout" value={SITE.priceValue} currency={SITE.currency} />
           <form action={startCheckout} className="mt-6">
             {source && <input type="hidden" name="from" value={source} />}
+            {utm && <input type="hidden" name="utm" value={utm} />}
             <PayButton label={`Unlock for ${SITE.price}`} />
           </form>
           <p className="mt-3 text-center text-xs text-muted">

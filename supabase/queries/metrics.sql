@@ -1,11 +1,12 @@
 -- =========================================================
 -- DueDuo — key numbers (read-only). Paste into the Supabase SQL editor and Run.
+-- Needs migrations 0006 (payments.source) and 0007 (payments.utm).
 -- "Buyers" = real paid buyers: a paid payment with amount_total > 0 and no refund.
 -- Tasks count as ticked when roadmap_progress.completed_at or custom_tasks.completed_at is set.
 -- =========================================================
 
 with paid as (
-  select user_id, min(created_at) as paid_at, min(source) as source
+  select user_id, min(created_at) as paid_at, min(source) as source, min(utm) as utm
   from public.payments
   where status = 'paid' and amount_total > 0
   group by user_id
@@ -19,6 +20,7 @@ per_buyer as (
   select
     b.user_id,
     b.source,
+    b.utm,
     exists (
       select 1 from public.pregnancy_members m
       where m.owner_id = b.user_id and m.created_at <= b.paid_at + interval '7 days'
@@ -47,4 +49,7 @@ select 5, 'Refunded payments (amount > 0)', count(*)::text
 union all
 select 6, 'Sales from guide: ' || coalesce(source, '(not from a guide)'), count(*)::text
   from per_buyer group by source
+union all
+select 7, 'Sales from ad/post: ' || coalesce(utm, '(untagged)'), count(*)::text
+  from per_buyer group by utm
 order by 1, 2;

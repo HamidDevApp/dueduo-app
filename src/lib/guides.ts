@@ -93,8 +93,6 @@ export function parseGuideSource(value: unknown): string | null {
   return typeof value === "string" && GUIDE_SOURCES.has(value) ? value : null;
 }
 
-/** Sign-up link that lands on checkout with the guide's name attached. */
-export const guideCheckoutPath = (g: Guide) => `/login?next=${encodeURIComponent(`/checkout?from=${guideSource(g)}`)}`;
 
 export type Source = { n: number; title: string; url: string };
 

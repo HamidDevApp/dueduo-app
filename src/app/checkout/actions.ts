@@ -3,6 +3,7 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { CONSENT_COOKIE } from "@/lib/consent";
+import { parseUtmLabel } from "@/lib/attribution";
 import { parseGuideSource } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 import { siteOrigin } from "@/lib/site";
@@ -20,13 +21,20 @@ export async function startCheckout(formData: FormData) {
   const origin = await siteOrigin();
   // Which free guide the purchase started from (fixed list only; never blank — Polar rejects empty metadata values).
   const source = parseGuideSource(formData.get("from"));
-  // Copied by Polar onto the order, so the webhook knows who paid, which guide it came from, and can send the ad Purchase event.
-  const required = { product: SITE.productKey, user_id: user.id, ...(source ? { source } : {}) };
+  // Which ad or post (UTM label, e.g. "meta/launch/reel8"); validated, never blank.
+  const utm = parseUtmLabel(formData.get("utm"));
+  // Copied by Polar onto the order, so the webhook knows who paid, where they came from, and can send the ad Purchase event.
+  const required = {
+    product: SITE.productKey,
+    user_id: user.id,
+    ...(source ? { source } : {}),
+    ...(utm ? { utm } : {}),
+  };
   const base = {
     products: [productId],
     allow_discount_codes: true,
     success_url: `${origin}/checkout/success?checkout_id={CHECKOUT_ID}`,
-    return_url: `${origin}/checkout?canceled=1${source ? `&from=${source}` : ""}`,
+    return_url: `${origin}/checkout?canceled=1${source ? `&from=${source}` : ""}${utm ? `&utm=${encodeURIComponent(utm)}` : ""}`,
   };
 
   let checkout: PolarCheckout;

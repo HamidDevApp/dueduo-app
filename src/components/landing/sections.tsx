@@ -21,7 +21,7 @@ import { CookieSettingsButton } from "@/components/consent/consent-banner";
 import { GUIDE_LIST } from "@/lib/guides";
 import { SITE } from "@/lib/site-config";
 import { CtaLink } from "./cta-link";
-import { ProductPreview } from "./product-preview";
+import { HeroDemo } from "@/components/home/hero-demo";
 
 /* Shared bits ------------------------------------------------------------ */
 
@@ -69,12 +69,12 @@ export function Hero() {
             <span className="rounded-full bg-ink px-2 py-0.5 text-canvas">New</span>
             Co-Pilot mode for partners <ArrowRight className="size-3.5" aria-hidden />
           </a>
-          <h1 className="mt-6 font-display text-[2.6rem] leading-[1.02] font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-            Your first pregnancy, <span className="text-brand-strong italic">planned for two.</span>
+          <h1 className="mt-6 font-display text-[2.6rem] leading-[1.02] font-semibold tracking-tight text-balance sm:text-6xl">
+            Your first pregnancy, <span className="text-brand-strong italic">without one of you carrying it all.</span>
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-            {SITE.name} is the week-by-week command center for first-time parents. Know exactly what to book, buy and
-            decide — while your partner gets their own task list, so you&apos;re never the only one remembering.
+            {SITE.name} is your week-by-week plan for two. Each week shows what to book, buy and decide, split between
+            you, and your partner gets their own task list. They join free.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <CtaLink>Start our plan — {SITE.price}</CtaLink>
@@ -93,7 +93,7 @@ export function Hero() {
             ))}
           </ul>
         </div>
-        <ProductPreview />
+        <HeroDemo />
       </div>
     </section>
   );

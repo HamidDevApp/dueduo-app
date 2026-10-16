@@ -10,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      updated="2026-10-15"
+      updated="2026-10-16"
       intro={`Your pregnancy is personal. This policy explains what ${SITE.name} collects, why, who helps us process it, and the choices you have. We never sell your data.`}
     >
       <LegalSection title="1. Who is responsible">
@@ -42,6 +42,16 @@ export default function PrivacyPage() {
             <strong>Which ad or link you came from:</strong> if you reach our site from one of our ads or social posts and
             then buy, we record the campaign label in that link (for example, which ad or pin) with your order, to learn
             which ads and posts work. No cookies are used for this.
+          </li>
+          <li>
+            <strong>Instagram comments and messages:</strong> when you comment a keyword such as PACK on one of our Instagram
+            posts, our server reads that comment through Instagram&apos;s API, sends you one direct message with the link you
+            asked for, and replies to your comment. We keep a record of the comment&apos;s ID, the post&apos;s ID, the keyword
+            and whether the message was sent for up to 12 months, so nobody gets the same message twice. We don&apos;t store
+            your username or what you wrote. When you message us on Instagram, we read and answer you there, and an AI
+            assistant (Claude, by Anthropic) helps us read messages and draft replies; a person approves every reply. Legal
+            basis: our legitimate interest in answering requests you make to us. To have your record deleted, email{" "}
+            <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
           </li>
           <li><strong>Technical:</strong> basic logs (such as IP address and browser) needed to run and secure the service.</li>
           <li><strong>Advertising cookies:</strong> only if you accept them (see section 7).</li>
@@ -75,6 +85,8 @@ export default function PrivacyPage() {
           </li>
           <li><strong>Our email provider</strong> — sending sign-in links and service emails.</li>
           <li><strong>Cloudflare Turnstile</strong> — a bot check on the sign-in form that blocks automated sign-ups.</li>
+          <li><strong>Meta (Instagram)</strong> — to read comments on our posts and send the messages you ask for.</li>
+          <li><strong>Anthropic (Claude)</strong> — to help us read Instagram messages and draft replies.</li>
           <li>
             <strong>Meta and TikTok</strong> — only if you accept advertising cookies. If you buy, we tell them a purchase
             happened (with your email in hashed, unreadable form) so we can measure our ads. No pregnancy or health details

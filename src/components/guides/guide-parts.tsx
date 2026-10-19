@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Check, ChevronRight } from "lucide-react";
 import type { Guide, Source } from "@/lib/guides";
 import { CheckoutLink } from "@/components/checkout-link";
-import { guideJsonLd, guideSource } from "@/lib/guides";
+import { AUTHOR, guideJsonLd, guideSource } from "@/lib/guides";
+import { formatLongDate } from "@/lib/utils";
 import { SITE } from "@/lib/site-config";
 
 /** Breadcrumb, H1 and structured data shared by every guide/tool page. */
@@ -23,6 +24,13 @@ export function GuideHeader({ guide, children }: { guide: Guide; children?: Reac
       <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight text-balance sm:text-5xl print:mt-0 print:text-2xl">
         {guide.h1}
       </h1>
+      <p className="mt-4 text-sm text-muted print:hidden">
+        By{" "}
+        <Link href={AUTHOR.path} className="font-semibold text-ink hover:text-brand-strong">
+          {AUTHOR.name}
+        </Link>
+        , {AUTHOR.role} · Last updated {formatLongDate(guide.updated ?? guide.published)}
+      </p>
       {children}
     </header>
   );

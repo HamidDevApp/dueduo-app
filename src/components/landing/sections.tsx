@@ -537,6 +537,7 @@ export function SiteFooter() {
             <Link href="/#features" className="text-muted hover:text-ink">Features</Link>
             <Link href="/#pricing" className="text-muted hover:text-ink">Pricing</Link>
             <Link href="/#faq" className="text-muted hover:text-ink">FAQ</Link>
+            <Link href="/about" className="text-muted hover:text-ink">About</Link>
             <Link href="/login" className="text-muted hover:text-ink">Log in</Link>
             <a href={`mailto:${SITE.supportEmail}`} className="text-muted hover:text-ink">Contact</a>
             <Link href="/terms" className="text-muted hover:text-ink">Terms</Link>

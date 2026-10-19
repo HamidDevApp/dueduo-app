@@ -7,9 +7,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE.url}/`, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE.url}/guides`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE.url}/about`, changeFrequency: "yearly", priority: 0.5 },
     ...GUIDE_LIST.map((g) => ({
       url: `${SITE.url}${g.path}`,
-      lastModified: g.published,
+      lastModified: g.updated ?? g.published,
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),

@@ -56,7 +56,8 @@ export function MessageCard({ text, tip }: { text: string; tip?: string }) {
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const filled = month ? text.split(PLACEHOLDER).join(month) : text;
-  const parts = text.split(PLACEHOLDER);
+  // Any "[something]" is a blank to fill in; only [month] is filled automatically.
+  const parts = text.split(/(\[[a-z ]+\])/i);
 
   async function copy() {
     try {
@@ -83,13 +84,17 @@ export function MessageCard({ text, tip }: { text: string; tip?: string }) {
     <div className="mt-4">
       <div className="rounded-[var(--radius-card)] border border-line bg-surface p-5">
         <p ref={body} className="text-lg leading-relaxed">
-          {parts.map((p, n) => (
-            <span key={n}>
-              {p}
-              {n < parts.length - 1 &&
-                (month ? month : <mark className="rounded bg-honey/40 px-1 text-ink">{PLACEHOLDER}</mark>)}
-            </span>
-          ))}
+          {parts.map((p, n) =>
+            p === PLACEHOLDER && month ? (
+              <span key={n}>{month}</span>
+            ) : /^\[[a-z ]+\]$/i.test(p) ? (
+              <mark key={n} className="rounded bg-honey/40 px-1 text-ink">
+                {p}
+              </mark>
+            ) : (
+              <span key={n} className="whitespace-pre-line">{p}</span>
+            ),
+          )}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <button type="button" onClick={copy} className={cn(button, "border border-line bg-canvas text-ink hover:bg-brand-soft")}>

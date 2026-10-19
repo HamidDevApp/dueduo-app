@@ -11,7 +11,12 @@ export type Guide = {
   blurb: string;
   kind: "Guide" | "Tool";
   published: string;
+  /** Last content update ("YYYY-MM-DD"); defaults to `published`. */
+  updated?: string;
 };
+
+/** Byline on every guide (E-E-A-T: a real person behind the content). */
+export const AUTHOR = { name: "Hamid Ouchlah", role: "founder of DueDuo", path: "/about" } as const;
 
 export const GUIDES = {
   hospitalBag: {
@@ -76,6 +81,17 @@ export const GUIDES = {
       "Ready-to-copy messages for telling family, your manager and your partner's work, plus messages for privacy, labor updates and visitors.",
     kind: "Guide",
     published: "2026-10-14",
+  },
+  bossNews: {
+    path: "/guides/how-to-tell-your-boss-youre-pregnant",
+    title: "How to Tell Your Boss You're Pregnant: Email and Script Templates",
+    description:
+      "When to tell work, what to say in the meeting, and the follow-up email, plus a version for the partner. Copy the templates and make them yours.",
+    h1: "How to tell your boss you're pregnant",
+    blurb:
+      "When to tell work, what to say in the meeting, and the follow-up email, plus a version for the partner. Copy the templates and make them yours.",
+    kind: "Guide",
+    published: "2026-10-19",
   },
 } satisfies Record<string, Guide>;
 
@@ -142,6 +158,31 @@ export const SOURCES = {
     title: "GOV.UK, Paternity Leave: how to claim",
     url: "https://www.gov.uk/paternity-pay-leave/how-to-claim",
   },
+  dolFmla: {
+    n: 10,
+    title: "U.S. Department of Labor, Fact Sheet #28: The Family and Medical Leave Act",
+    url: "https://www.dol.gov/agencies/whd/fact-sheets/28-fmla",
+  },
+  dolFmlaNotice: {
+    n: 11,
+    title: "U.S. Department of Labor, Fact Sheet #28E: Requesting leave under the FMLA",
+    url: "https://www.dol.gov/agencies/whd/fact-sheets/28e-fmla-employee-notice",
+  },
+  eeocPwfa: {
+    n: 12,
+    title: "U.S. EEOC, What you should know about the Pregnant Workers Fairness Act",
+    url: "https://www.eeoc.gov/wysk/what-you-should-know-about-pregnant-workers-fairness-act",
+  },
+  canadaEi: {
+    n: 13,
+    title: "Government of Canada, EI maternity and parental benefits",
+    url: "https://www.canada.ca/en/services/benefits/ei/ei-maternity-parental.html",
+  },
+  fairWork: {
+    n: 14,
+    title: "Fair Work Ombudsman (Australia), Maternity and parental leave",
+    url: "https://www.fairwork.gov.au/leave/maternity-and-parental-leave",
+  },
 } satisfies Record<string, Source>;
 
 /** Page metadata: exact approved <title>, description, canonical and share card. */
@@ -176,8 +217,8 @@ export function guideJsonLd(g: Guide) {
         url,
         mainEntityOfPage: url,
         datePublished: g.published,
-        dateModified: g.published,
-        author: { "@type": "Organization", name: SITE.name, url: SITE.url },
+        dateModified: g.updated ?? g.published,
+        author: { "@type": "Person", name: AUTHOR.name, url: `${SITE.url}${AUTHOR.path}` },
         publisher: {
           "@type": "Organization",
           "@id": `${SITE.url}/#organization`,

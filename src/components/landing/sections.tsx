@@ -518,6 +518,13 @@ export function SiteFooter() {
           <div className="max-w-xs">
             <Logo />
             <p className="mt-4 text-sm text-muted">{SITE.tagline}.</p>
+            <nav aria-label="DueDuo on social media" className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              {SITE.social.map((s) => (
+                <a key={s.name} href={s.url} target="_blank" rel="noopener" className="text-muted hover:text-ink">
+                  {s.name}
+                </a>
+              ))}
+            </nav>
           </div>
           <nav aria-label="Free guides" className="flex flex-col gap-3 text-sm">
             <Link href="/guides" className="font-semibold text-ink hover:text-brand-strong">Free guides</Link>

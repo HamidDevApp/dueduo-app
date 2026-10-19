@@ -38,7 +38,7 @@ const jsonLd = {
       name: SITE.name,
       url: SITE.url,
       logo: `${SITE.url}/brand/dueduo-icon-512.png`,
-      sameAs: ["https://www.facebook.com/dueduoo", "https://www.instagram.com/dueduoo/"],
+      sameAs: SITE.social.map((s) => s.url),
     },
     {
       "@type": "WebApplication",

@@ -7,6 +7,8 @@ export type Guide = {
   title: string;
   description: string;
   h1: string;
+  /** Card title on /guides, when it should be shorter than the H1. */
+  cardTitle?: string;
   /** One line for the /guides index card. */
   blurb: string;
   kind: "Guide" | "Tool";
@@ -92,6 +94,18 @@ export const GUIDES = {
       "When to tell work, what to say in the meeting, and the follow-up email, plus a version for the partner. Copy the templates and make them yours.",
     kind: "Guide",
     published: "2026-10-19",
+  },
+  splitList: {
+    path: "/guides/split-pregnancy-to-do-list",
+    title: "How to Split the Pregnancy To-Do List With Your Partner",
+    description:
+      "Own whole jobs, not chores. A 20-minute way for expecting couples to split pregnancy planning, plus a free printable who-owns-what sheet.",
+    h1: "How to split the pregnancy to-do list with your partner",
+    cardTitle: "Split the pregnancy to-do list",
+    blurb: "Own whole jobs, not chores: a 20-minute split and a printable sheet.",
+    kind: "Guide",
+    published: "2026-10-19",
+    updated: "2026-10-19",
   },
 } satisfies Record<string, Guide>;
 
@@ -182,6 +196,22 @@ export const SOURCES = {
     n: 14,
     title: "Fair Work Ombudsman (Australia), Maternity and parental leave",
     url: "https://www.fairwork.gov.au/leave/maternity-and-parental-leave",
+  },
+  daminger: {
+    n: 15,
+    title: "Allison Daminger, \"The Cognitive Dimension of Household Labor\", American Sociological Review, 2019",
+    url: "https://inequality.hks.harvard.edu/publications/cognitive-dimension-household-labor",
+  },
+  aapPediatrician: {
+    n: 16,
+    title:
+      "American Academy of Pediatrics (HealthyChildren.org), \"Expectant Parents Encouraged to Visit Pediatrician Before Birth of Baby\"",
+    url: "https://healthychildren.org/English/news/Pages/Expectant-Parents-Encouraged-to-Visit-Pediatrician-Before-Birth-of-Baby.aspx",
+  },
+  nhtsaCarSeats: {
+    n: 17,
+    title: "NHTSA, \"Car Seats and Booster Seats\"",
+    url: "https://www.nhtsa.gov/equipment/car-seats-and-booster-seats",
   },
 } satisfies Record<string, Source>;
 

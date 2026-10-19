@@ -39,6 +39,11 @@ export default function TellFamilyAndWorkPage() {
         <h2 className={h2}>Telling work</h2>
         <Prose className="mt-4">
           <p>When you tell work is up to you, but notice rules for leave depend on where you live and work.</p>
+          <p>
+            Telling a manager deserves its own plan. Our{" "}
+            <Link href={GUIDES.bossNews.path}>guide to telling your boss you&apos;re pregnant</Link> has a meeting script,
+            a follow-up email and a version for the partner.
+          </p>
           <ul className="list-disc space-y-2.5 pl-5">
             <li>
               <strong>UK, birthing parent:</strong>{" "}

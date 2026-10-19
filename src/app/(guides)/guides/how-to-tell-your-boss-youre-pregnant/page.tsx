@@ -20,6 +20,10 @@ export default function TellYourBossPage() {
           Telling work can feel bigger than telling family. It goes more smoothly with a plan: when to tell, what to say,
           and what to put in writing afterwards. Below are templates you can copy, for both of you.
         </p>
+        <p>
+          For the family announcement, labor updates and visitor messages, see our{" "}
+          <Link href={GUIDES.messages.path}>guide to telling family and work</Link>.
+        </p>
       </Prose>
 
       <h2 className={h2}>When to tell work</h2>

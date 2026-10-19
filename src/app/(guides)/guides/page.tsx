@@ -25,7 +25,7 @@ export default function GuidesIndexPage() {
               className="group flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-surface p-6 transition-shadow hover:shadow-lg hover:shadow-ink/5"
             >
               <span className="text-xs font-semibold tracking-[0.18em] text-sage uppercase">{g.kind}</span>
-              <span className="mt-3 font-display text-xl font-semibold">{g.h1}</span>
+              <span className="mt-3 font-display text-xl font-semibold">{g.cardTitle ?? g.h1}</span>
               <span className="mt-2 flex-1 text-sm leading-relaxed text-muted">{g.blurb}</span>
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-strong">
                 {g.kind === "Tool" ? "Open the calculator" : "Read the guide"}

@@ -89,10 +89,7 @@ export default function PrivacyPage() {
             as an independent controller under its own privacy policy.
           </li>
           <li><strong>Resend, our email provider</strong> — sign-in links, service emails and the planning pack emails.</li>
-          <li>
-            <strong>Cloudflare Turnstile</strong> — a bot check on the sign-in and planning pack forms that blocks automated
-            sign-ups.
-          </li>
+          <li><strong>Cloudflare Turnstile</strong> — a bot check on the sign-in and planning pack forms that blocks automated sign-ups.</li>
           <li><strong>Meta (Instagram)</strong> — to read comments on our posts and send the messages you ask for.</li>
           <li><strong>Anthropic (Claude)</strong> — to help us read Instagram messages and draft replies.</li>
           <li>

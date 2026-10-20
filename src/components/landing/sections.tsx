@@ -384,50 +384,6 @@ export function HowItWorks() {
   );
 }
 
-
-
-  {/* SIGN-UP ---------------------------------------------------------------- */}
-  <section id="signup" className="scroll-mt-20 py-12 sm:py-16 bg-gradient-to-b from-ink/5 to-white">
-    <div className="mx-auto max-w-6xl px-5 sm:px-8">
-      <div className="mx-auto max-w-2xl text-center">
-        <Eyebrow>Start your plan</Eyebrow>
-        <SectionTitle>Ready to get planning?</SectionTitle>
-        <p className="mt-4 text-lg text-muted">Join over 5,000 expecting parents who have started their journey with DueDuo</p>
-      </div>
-
-      <div className="mx-auto mt-10 rounded-xl bg-white shadow-2xl ring-1 shadow-ink/10 max-w-2xl p-6 sm:p-8">
-        <form className="space-y-4">
-          <div className="rounded-xl bg-muted p-3">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              className="w-full bg-transparent border-0 rounded-xl text-sm font-medium placeholder:text-ink/60 focus:outline-none focus:ring-2 focus:ring-ink"
-              required
-              aria-label="Email address"
-            />
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-2">
-            <button
-              type="submit"
-              className="flex-1 bg-ink text-white rounded-xl py-2.5 px-4 sm:py-3 font-medium hover:bg-ink/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-            >
-              Get Started
-            </button>
-
-            {/* Turnstile verification - optional */}
-            {/* <Turnstile
-              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-              onToken={setTurnstileToken}
-              disabled={!email}
-            /> */}
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  {/* PRICING ---------------------------------------------------------------- */}
 /* PRICING ---------------------------------------------------------------- */
 
 const INCLUDED = [

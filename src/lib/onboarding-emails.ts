@@ -20,7 +20,7 @@ export type EmailKey =
   | "day2_task"
   | "appointment"
   | "budget"
-| "feedback" | "founding" | "day9";
+  | "feedback";
 
 /** Per-buyer values some templates fill in. */
 export type TemplateVars = {
@@ -158,26 +158,6 @@ const TEMPLATES: Record<EmailKey, Template | ((v: TemplateVars) => Template)> = 
         p: "And a small favour: if DueDuo has helped, may we share a sentence or two of your reply on our website or Instagram? We'll only do it if you say yes in your reply. You can choose your first name only, or no name at all.",
       },
       { p: "Thank you for planning with us." },
-    ],
-  },
-  day9: {
-    subject: "Almost there — your 9-̄day check-̄in",
-    preview: "Quick tasks as you settle into your plan.",
-    blocks: [
-      { p: "You have had DueDuo for a week now. Let us make sure everything is still on track." },
-      { p: "This week’s focus: review your due date, update any tasks, and confirm your partner’s Co-Pilot access." },
-      { button: "Update my plan", href: url("/onboarding") },
-      { p: "Stuck on anything? Just reply to this email. We read every reply." },
-    ],
-  },
-  founding: {
-    subject: "Ready for your free planning pack?",
-    preview: "A special offer for new parents.",
-    blocks: [
-      { p: "If you’re expecting now and live in the US, Canada or Australia, you can use DueDuo free, both of you, for this pregnancy." },
-      { p: "It’s a quick way to stay on top of what to do, buy, and decide each week — split between the two of you." },
-      { button: "Claim your spot", href: url("/dashboard") },
-      { p: "If you’d like a spot, just reply FOUNDING and we’ll send you a 2-minute consent form, then your code." },
     ],
   },
 };

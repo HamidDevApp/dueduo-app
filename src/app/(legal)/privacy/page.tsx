@@ -10,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      updated="2026-10-16"
+      updated="2026-10-20"
       intro={`Your pregnancy is personal. This policy explains what ${SITE.name} collects, why, who helps us process it, and the choices you have. We never sell your data.`}
     >
       <LegalSection title="1. Who is responsible">
@@ -52,6 +52,11 @@ export default function PrivacyPage() {
             assistant (Claude, by Anthropic) helps us read messages and draft replies; a person approves every reply. Legal
             basis: our legitimate interest in answering requests you make to us. To have your record deleted, email{" "}
             <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>.
+          </li>
+          <li>
+            <strong>Planning pack:</strong> if you sign up for our free printables, we keep your email address and send the
+            pack and a few planning emails. Every email has an unsubscribe link, and you can ask us to delete your address
+            anytime.
           </li>
           <li><strong>Technical:</strong> basic logs (such as IP address and browser) needed to run and secure the service.</li>
           <li><strong>Advertising cookies:</strong> only if you accept them (see section 7).</li>

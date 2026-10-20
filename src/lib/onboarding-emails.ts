@@ -30,14 +30,14 @@ export type TemplateVars = {
   joinedPartnerName?: string | null;
 };
 
-type Block =
+export type Block =
   | { p: string }
   | { ol: string[] }
   | { ul: string[] }
   | { button: string; href: string }
   | { small: string };
 
-type Template = { subject: string; preview: string; blocks: Block[] };
+export type Template = { subject: string; preview: string; blocks: Block[] };
 
 const url = (path: string) => `${SITE.url}${path}`;
 
@@ -238,13 +238,27 @@ export function renderOnboardingEmail(
   const entry = TEMPLATES[key];
   const t = typeof entry === "function" ? entry(opts.vars ?? {}) : entry;
   const unsub = key !== "welcome" && opts.userId ? unsubscribeUrl(opts.userId) : null;
-  const greeting = `Hi ${opts.firstName},`;
+  return renderEmail(t, {
+    greeting: `Hi ${opts.firstName},`,
+    reason: "You're getting this because you bought DueDuo.",
+    unsubUrl: unsub,
+    unsubLabel: "Unsubscribe from these tips",
+  });
+}
+
+/** Shared DueDuo email layout (HTML + text + unsubscribe headers). */
+export function renderEmail(
+  t: Template,
+  opts: { greeting: string; reason: string; unsubUrl: string | null; unsubLabel: string },
+): RenderedEmail {
+  const { greeting, reason } = opts;
+  const unsub = opts.unsubUrl;
   const address = `${SITE.legal.operator}, ${SITE.legal.address}`;
 
   const footerHtml = [
     unsub
-      ? `You're getting this because you bought DueDuo. <a href="${esc(unsub)}" style="color:${C.muted};text-decoration:underline;">Unsubscribe from these tips</a>.`
-      : "You're getting this because you bought DueDuo.",
+      ? `${esc(reason)} <a href="${esc(unsub)}" style="color:${C.muted};text-decoration:underline;">${esc(opts.unsubLabel)}</a>.`
+      : esc(reason),
     esc(address),
   ].join("<br>");
 
@@ -275,8 +289,8 @@ ${t.blocks.map(blockHtml).join("\n")}
     ...t.blocks.map(blockText),
     "The DueDuo team",
     "---",
-    "You're getting this because you bought DueDuo.",
-    ...(unsub ? [`Unsubscribe from these tips: ${unsub}`] : []),
+    reason,
+    ...(unsub ? [`${opts.unsubLabel}: ${unsub}`] : []),
     address,
   ].join("\n\n");
 

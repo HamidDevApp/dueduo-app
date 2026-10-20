@@ -36,5 +36,7 @@ export const SITE = {
     { name: "Facebook", url: "https://www.facebook.com/dueduoo" },
   ],
   /** Cloudflare Turnstile site key (public) for the login bot check. The secret key lives in Supabase only. */
+  /** Founding-couple places still open? When false, the pack's day-5 email switches to the regular $29 offer. */
+  foundingOpen: true as boolean,
   turnstileSiteKey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "0x4AAAAAAFWnZkrbC0JnkNH-",
 } as const;

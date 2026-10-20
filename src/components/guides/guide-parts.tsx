@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Check, ChevronRight } from "lucide-react";
 import type { Guide, Source } from "@/lib/guides";
 import { CheckoutLink } from "@/components/checkout-link";
+import { PackSignup } from "@/components/guides/pack-signup";
 import { AUTHOR, guideJsonLd, guideSource } from "@/lib/guides";
 import { formatLongDate } from "@/lib/utils";
 import { SITE } from "@/lib/site-config";
@@ -81,6 +82,8 @@ export function GuideCta({ guide, children }: { guide: Guide; children: React.Re
     ...(SITE.guaranteeDays ? [`${SITE.guaranteeDays}-day money-back guarantee`] : []),
   ];
   return (
+    <>
+    <PackSignup source={guideSource(guide)} />
     <aside className="mt-14 rounded-[var(--radius-card)] border border-brand/20 bg-brand-soft/60 p-6 sm:p-8 print:hidden">
       <p className="leading-relaxed text-ink/85">{children}</p>
       <h2 className="mt-6 font-display text-2xl font-semibold tracking-tight">Plan it together in {SITE.name}</h2>
@@ -102,5 +105,6 @@ export function GuideCta({ guide, children }: { guide: Guide; children: React.Re
         ))}
       </ul>
     </aside>
+    </>
   );
 }

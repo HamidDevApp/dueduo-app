@@ -88,8 +88,8 @@ export default function PrivacyPage() {
             <strong>Polar</strong> — our merchant of record: it handles checkout, payment, receipts, sales tax and refunds,
             as an independent controller under its own privacy policy.
           </li>
-          <li><strong>Our email provider</strong> — sending sign-in links and service emails.</li>
-          <li><strong>Cloudflare Turnstile</strong> — a bot check on the sign-in form that blocks automated sign-ups.</li>
+          <li><strong>Resend, our email provider</strong> — sign-in links, service emails and the planning pack emails.</li>,
+          <li><strong>a bot check on the sign-in and planning pack forms</strong> that blocks automated sign-ups.</li>,
           <li><strong>Meta (Instagram)</strong> — to read comments on our posts and send the messages you ask for.</li>
           <li><strong>Anthropic (Claude)</strong> — to help us read Instagram messages and draft replies.</li>
           <li>

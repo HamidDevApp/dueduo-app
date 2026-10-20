@@ -53,9 +53,9 @@ function template(key: PackEmailKey, confirmUrl?: string): Template {
             preview: "We're looking for 10 founding couples.",
             blocks: [
               {
-                p: "We're looking for 10 founding couples to use DueDuo free, for good: a week-by-week plan with your own task lists, shared checklists and printouts. In return, we ask for short, honest feedback after two weeks, by WhatsApp or email.",
+              p: "If you're expecting now and live in the US, Canada or Australia, we're looking for 10 founding couples to use DueDuo free, both of you, for this pregnancy: a week-by-week plan with your own task lists, shared checklists and printouts. In return, we ask for short, honest feedback after two weeks, by WhatsApp or email.",
               },
-              { p: `If you'd like a spot, just reply "FOUNDING" and we'll send you your code.` },
+              { p: `If you'd like a spot, just reply "FOUNDING" and we'll send you a 2-minute consent form, then your code.` },
             ],
           }
         : {

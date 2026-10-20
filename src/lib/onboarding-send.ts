@@ -12,7 +12,7 @@ const DAY_MS = 86_400_000;
  * email_log key: one per email, except the day-2 email, whose two versions share
  * "day2" so a buyer gets at most one of them, ever.
  */
-type LogKey = Exclude<EmailKey, "day2_setup" | "day2_task"> | "day2";
+type LogKey = Exclude<EmailKey, "day2_setup" | "day2_task"> | "day2" | "founding";
 
 /** Emails after the welcome one: day after purchase each one becomes due. */
 const SCHEDULE: { key: LogKey; day: number }[] = [
@@ -21,6 +21,8 @@ const SCHEDULE: { key: LogKey; day: number }[] = [
   { key: "appointment", day: 3 },
   { key: "budget", day: 7 },
   { key: "feedback", day: 10 },
+  { key: "founding", day: 5 },
+  { key: "day9", day: 9 },
 ];
 /** A missed cron run still sends, up to this many days late. Older emails are skipped, never piled up. */
 const CATCH_UP_DAYS = 3;

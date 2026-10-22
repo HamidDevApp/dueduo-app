@@ -32,6 +32,11 @@ export function GuideHeader({ guide, children }: { guide: Guide; children?: Reac
         </Link>
         , {AUTHOR.role} · Last updated {formatLongDate(guide.updated ?? guide.published)}
       </p>
+      <p className="mt-3 text-sm print:hidden">
+        <Link href="/plan" className="font-semibold text-brand-strong hover:text-brand-deep">
+          See what to do this week: try the free plan for two →
+        </Link>
+      </p>
       {children}
     </header>
   );

@@ -12,6 +12,8 @@ export type Guide = {
   /** One line for the /guides index card. */
   blurb: string;
   kind: "Guide" | "Tool";
+  /** Card CTA on /guides, when the default ("Read the guide" / "Open the calculator") doesn't fit. */
+  cta?: string;
   published: string;
   /** Last content update ("YYYY-MM-DD"); defaults to `published`. */
   updated?: string;
@@ -106,6 +108,17 @@ export const GUIDES = {
     kind: "Guide",
     published: "2026-10-19",
     updated: "2026-10-19",
+  },
+  plan: {
+    path: "/plan",
+    title: "Free Pregnancy Plan for Two: What to Do This Week",
+    description:
+      "Put in your due date and see the next 4 weeks of pregnancy split three ways: what's yours, what's your partner's, and what you do together. Free, no sign-up.",
+    h1: "Your pregnancy plan for two",
+    blurb: "Your next 4 weeks, split between you, your partner, and together.",
+    kind: "Tool",
+    cta: "Open the plan",
+    published: "2026-10-22",
   },
 } satisfies Record<string, Guide>;
 

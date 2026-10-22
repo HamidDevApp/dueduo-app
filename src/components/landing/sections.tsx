@@ -78,12 +78,12 @@ export function Hero() {
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <CtaLink>Start our plan — {SITE.price}</CtaLink>
-            <a
-              href="#co-pilot"
+            <Link
+              href="/plan"
               className="inline-flex items-center justify-center gap-1.5 rounded-full px-5 py-4 text-base font-semibold text-ink transition-colors hover:bg-white/70"
             >
-              See how Co-Pilot works
-            </a>
+              Get your free plan for two
+            </Link>
           </div>
           <ul className="mt-9 grid gap-x-6 gap-y-2.5 text-sm text-muted sm:grid-cols-2">
             {trust.map(({ icon: Icon, text }) => (
@@ -528,7 +528,8 @@ export function SiteFooter() {
           </div>
           <nav aria-label="Free guides" className="flex flex-col gap-3 text-sm">
             <Link href="/guides" className="font-semibold text-ink hover:text-brand-strong">Free guides</Link>
-            {GUIDE_LIST.map((g) => (
+            <Link href="/plan" className="text-muted hover:text-ink">Free plan</Link>
+            {GUIDE_LIST.filter((g) => g.path !== "/plan").map((g) => (
               <Link key={g.path} href={g.path} className="text-muted hover:text-ink">{g.h1}</Link>
             ))}
           </nav>

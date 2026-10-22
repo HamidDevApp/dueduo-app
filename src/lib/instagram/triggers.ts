@@ -54,10 +54,9 @@ export const TRIGGERS: Trigger[] = [
   {
     word: "DATE",
     active: false,
-    // Points at the due-date timeline tool once it is live (built 29 Oct to 4 Nov). Check the final URL before switching it on.
     dm:
-      "Here's your free due-date timeline. Put in your due date and you'll see the next 4 weeks split three ways: you, your partner, and together:\n\n" +
-      link("/tools/due-date-timeline", "date"),
+      "Here's your free plan for two. Put in your due date and you'll see the next 4 weeks split three ways: you, your partner, and together:\n\n" +
+      link("/plan", "date"),
     publicReplies: REPLIES,
   },
 ];

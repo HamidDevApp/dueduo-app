@@ -28,7 +28,7 @@ export default function GuidesIndexPage() {
               <span className="mt-3 font-display text-xl font-semibold">{g.cardTitle ?? g.h1}</span>
               <span className="mt-2 flex-1 text-sm leading-relaxed text-muted">{g.blurb}</span>
               <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-strong">
-                {g.kind === "Tool" ? "Open the calculator" : "Read the guide"}
+                {g.cta ?? (g.kind === "Tool" ? "Open the calculator" : "Read the guide")}
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </span>
             </Link>
